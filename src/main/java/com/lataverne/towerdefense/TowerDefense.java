@@ -3,15 +3,10 @@ package com.lataverne.towerdefense;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.Spawns;
-import com.almasb.fxgl.entity.level.tiled.TiledMap;
 import javafx.scene.text.Text;
 
-import java.util.Optional;
-
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 
 public class TowerDefense extends GameApplication {
 
@@ -26,7 +21,7 @@ public class TowerDefense extends GameApplication {
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new TowerDefenseFactory());
-        var level = FXGL.setLevelFromMap("tmx/test_level.tmx");
+        var level = FXGL.setLevelFromMap("tmx/level0.tmx");
     }
 
     @Override

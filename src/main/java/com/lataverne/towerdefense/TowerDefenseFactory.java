@@ -6,18 +6,17 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PhysicsComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class TowerDefenseFactory implements EntityFactory {
 
-    @Spawns("test")
-    public Entity newBackground(SpawnData data) {
-        return entityBuilder()
-                .view(new ScrollingBackgroundView(texture("background/forest.png").getImage(), getAppWidth(), getAppHeight()))
-                .zIndex(-1)
-                .with(new IrremovableComponent())
-                .build();
+    @Spawns("")
+    public Entity empty(SpawnData data) {
+        return entityBuilder().zIndex(-1).build();
     }
 
 }
