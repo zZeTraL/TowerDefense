@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.lataverne.towerdefense.cache.EntityCache;
+import com.lataverne.towerdefense.components.ArcherComponent;
 import com.lataverne.towerdefense.components.TurretComponent;
 import com.lataverne.towerdefense.enums.EntityType;
 
@@ -24,5 +25,18 @@ public class TowerDefenseFactory implements EntityFactory {
         entityCache.add(turret);
         return turret;
     }
+
+    @Spawns("Archer")
+    public Entity newArcher(SpawnData data){
+        Entity archer = FXGL.entityBuilder()
+                .at(data.getX(), data.getY())
+                .type(EntityType.ARCHER)
+                .view("bucket.png")
+                .with(new ArcherComponent())
+                .build();
+        entityCache.add(archer);
+        return archer;
+    }
+
 
 }

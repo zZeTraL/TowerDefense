@@ -25,13 +25,14 @@ public class TowerDefense extends GameApplication {
     protected void initSettings(GameSettings settings){
         settings.setTitle("Tower Defense");
         settings.setVersion("build_0.1");
-        settings.setWidth(500);
-        settings.setHeight(500);
+        settings.setWidth(800);
+        settings.setHeight(600);
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars){
         vars.put("score", 0);
+        vars.put("level", 0);
     }
 
 
@@ -45,7 +46,7 @@ public class TowerDefense extends GameApplication {
         getGameWorld().addEntityFactory(new TowerDefenseFactory());
         Level level = levelManager.nextLevel();
         FXGL.spawn("Turret", 300, 150);
-        FXGL.spawn("Turret", 150, 150);
+        FXGL.spawn("Archer", 150, 150);
         entityCache.print();
 
     }
@@ -60,7 +61,10 @@ public class TowerDefense extends GameApplication {
 
     @Override
     protected void initUI(){
-        Text text = new Text(100, 100, "text");
+        var level = FXGL.getWorldProperties().getInt("level");
+        Text text = new Text(20, 20, "LEVEL " + String.valueOf(level));
+        text.setScaleX(2);
+        text.setScaleY(2);
         FXGL.getGameScene().addUINode(text);
     }
 

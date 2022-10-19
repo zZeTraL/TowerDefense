@@ -3,13 +3,13 @@ package com.lataverne.towerdefense.components;
 import com.almasb.fxgl.entity.component.Component;
 import com.lataverne.towerdefense.enums.EntityType;
 
-public class TurretComponent extends Component implements EntityInterface {
+public class ArcherComponent extends Component implements EntityInterface {
 
     private final EntityType type;
     private int radius;
     private int health;
 
-    public TurretComponent(){
+    public ArcherComponent(){
         this.type = EntityType.TURRET;
         this.radius = 100;
         this.health = 100;
@@ -22,7 +22,7 @@ public class TurretComponent extends Component implements EntityInterface {
     // Methods from EntityInterface
     @Override
     public void attack(){
-        System.out.println("Turret with ID (" + this + ") attack");
+        System.out.println("Archer with ID (" + this + ") attack");
     }
 
     @Override

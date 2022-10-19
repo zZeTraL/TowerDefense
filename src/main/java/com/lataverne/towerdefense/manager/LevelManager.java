@@ -14,6 +14,7 @@ public class LevelManager {
     }
 
     // Getters
+    public int getCurrentLevel(){ return currentLevel; }
 
     // Setters
 
