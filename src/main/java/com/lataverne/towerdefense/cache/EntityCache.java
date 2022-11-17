@@ -10,9 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityCache {
 
+    private static EntityCache instance;
     // Thread safe hashMap
     ConcurrentHashMap<EntityType, List<Entity>> entityCache;
-    public EntityCache(){
+
+    private EntityCache(){
         entityCache = new ConcurrentHashMap<>();
         // Initialization of the hashmap
         for (EntityType type : EntityType.values()){
@@ -21,6 +23,10 @@ public class EntityCache {
     }
 
     // Getters
+    public static EntityCache getInstance(){
+        if(instance == null) instance = new EntityCache();
+        return instance;
+    }
     public ConcurrentHashMap<EntityType, List<Entity>> getEntityCache(){ return entityCache; }
 
     // Setters

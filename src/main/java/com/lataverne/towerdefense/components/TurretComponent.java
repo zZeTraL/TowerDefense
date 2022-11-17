@@ -10,7 +10,7 @@ public class TurretComponent extends Component implements EntityInterface {
     private int health;
 
     public TurretComponent(){
-        this.type = EntityType.TURRET;
+        this.type = EntityType.TOWER;
         this.radius = 100;
         this.health = 100;
     }

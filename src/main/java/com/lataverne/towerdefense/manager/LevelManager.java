@@ -5,15 +5,24 @@ import com.almasb.fxgl.entity.level.Level;
 
 public class LevelManager {
 
+    // Design pattern based on Singleton style
+    // Instance
+    private static LevelManager instance;
+
+    // Attributes
     private int currentLevel;
     private int lastLevel;
 
-    public LevelManager(){
+    private LevelManager(){
         this.currentLevel = 0;
         this.lastLevel = 10;
     }
 
     // Getters
+    public static LevelManager getInstance(){
+        if(instance == null) instance = new LevelManager();
+        return instance;
+    }
     public int getCurrentLevel(){ return currentLevel; }
 
     // Setters

@@ -1,5 +1,6 @@
 package com.lataverne.towerdefense;
 
+import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -7,6 +8,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.level.Level;
 import com.lataverne.towerdefense.cache.EntityCache;
+import com.lataverne.towerdefense.components.EntityInterface;
 import com.lataverne.towerdefense.components.TurretComponent;
 import com.lataverne.towerdefense.manager.LevelManager;
 import javafx.scene.text.Text;
@@ -25,28 +27,31 @@ public class TowerDefense extends GameApplication {
     protected void initSettings(GameSettings settings){
         settings.setTitle("Tower Defense");
         settings.setVersion("build_0.1");
-        settings.setWidth(800);
-        settings.setHeight(600);
+        settings.setWidth(20 * 50 + 115);
+        settings.setHeight(15 * 50);
+        settings.setAppIcon("logo.jpg");
+        settings.setDefaultCursor(new CursorInfo("cursor.png", 0, 0));
+        settings.setMainMenuEnabled(true);
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars){
         vars.put("score", 0);
         vars.put("level", 0);
+        vars.put("money", 500);
     }
 
 
     @Override
     protected void initGame(){
-        // Initialization of EntityCache
-        entityCache = new EntityCache();
-        levelManager = new LevelManager();
+        // Initialization of EntityCache and levelManager
+        entityCache = EntityCache.getInstance();
+        levelManager = LevelManager.getInstance();
 
         // We load our Factory to spawn entity
         getGameWorld().addEntityFactory(new TowerDefenseFactory());
         Level level = levelManager.nextLevel();
-        FXGL.spawn("Turret", 300, 150);
-        FXGL.spawn("Archer", 150, 150);
+        FXGL.spawn("Tower", 0, 0);
         entityCache.print();
 
     }
@@ -73,7 +78,6 @@ public class TowerDefense extends GameApplication {
     }
 
     public static EntityCache getEntityCache(){ return entityCache; }
-    public static LevelManager getLevelManager(){ return levelManager; }
     public static Boolean getUpdate(){ return update; }
 
 }

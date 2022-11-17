@@ -6,7 +6,7 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.lataverne.towerdefense.cache.EntityCache;
-import com.lataverne.towerdefense.components.ArcherComponent;
+import com.lataverne.towerdefense.components.EnemyComponent;
 import com.lataverne.towerdefense.components.TurretComponent;
 import com.lataverne.towerdefense.enums.EntityType;
 
@@ -14,28 +14,28 @@ public class TowerDefenseFactory implements EntityFactory {
 
     private final EntityCache entityCache = TowerDefense.getEntityCache();
 
-    @Spawns("Turret")
-    public Entity newTurret(SpawnData data){
-        Entity turret = FXGL.entityBuilder()
+    @Spawns("Tower")
+    public Entity newTower(SpawnData data){
+        Entity tower = FXGL.entityBuilder()
                 .at(data.getX(), data.getY())
-                .type(EntityType.TURRET)
+                .type(EntityType.TOWER)
                 .view("droplet.png")
                 .with(new TurretComponent())
                 .build();
-        entityCache.add(turret);
-        return turret;
+        entityCache.add(tower);
+        return tower;
     }
 
-    @Spawns("Archer")
-    public Entity newArcher(SpawnData data){
-        Entity archer = FXGL.entityBuilder()
+    @Spawns("Enemy")
+    public Entity newEnemy(SpawnData data){
+        Entity enemy = FXGL.entityBuilder(data)
                 .at(data.getX(), data.getY())
-                .type(EntityType.ARCHER)
-                .view("bucket.png")
-                .with(new ArcherComponent())
+                .type(EntityType.TOWER)
+                .view("enemy.png")
+                .with(new EnemyComponent())
                 .build();
-        entityCache.add(archer);
-        return archer;
+        entityCache.add(enemy);
+        return enemy;
     }
 
 
