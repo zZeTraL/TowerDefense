@@ -2,7 +2,8 @@ package com.lataverne.towerdefense.manager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.level.Level;
-import com.lataverne.towerdefense.cache.EntityCache;
+import com.lataverne.towerdefense.cache.EnemyCache;
+import com.lataverne.towerdefense.cache.TowerCache;
 import com.lataverne.towerdefense.data.LevelData;
 import javafx.util.Duration;
 
@@ -49,9 +50,9 @@ public class LevelManager {
     public void spawnEnemy(LevelData data){
         FXGL.runOnce(() -> {
             FXGL.run(() -> {
-                FXGL.spawn("Enemy", 32, 288);
+                FXGL.spawn("Enemy", -64, 288);
             }, Duration.seconds(data.enemySpawnRate()), data.amountOfEnemy());
-        }, Duration.seconds(2));
+        }, Duration.seconds(3));
     }
 
     public Level setLevel(int level){
@@ -61,9 +62,9 @@ public class LevelManager {
             LevelData data = levelDataList.get(currentLevel);
             FXGL.set("money", data.money());
             FXGL.set("levelName", data.name());
-            spawnEnemy(data);
             Level tmp = FXGL.setLevelFromMap("tmx/level" + level + ".tmx");
-            System.out.println(EntityCache.getInstance().getEntityCache());
+            spawnEnemy(data);
+            //System.out.println(TowerCache.getInstance().getCache());
             return tmp;
         }
     }
