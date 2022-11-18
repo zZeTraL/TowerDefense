@@ -50,7 +50,7 @@ public class LevelManager {
         FXGL.runOnce(() -> {
             FXGL.run(() -> {
                 FXGL.spawn("Enemy", 32, 288);
-            }, Duration.seconds(data.spawnRate()), data.amountOfEnemy());
+            }, Duration.seconds(data.enemySpawnRate()), data.amountOfEnemy());
         }, Duration.seconds(2));
     }
 

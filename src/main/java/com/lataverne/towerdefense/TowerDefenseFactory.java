@@ -5,24 +5,12 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.lataverne.towerdefense.cache.EntityCache;
 import com.lataverne.towerdefense.components.EnemyComponent;
 import com.lataverne.towerdefense.components.TowerComponent;
 import com.lataverne.towerdefense.components.WayPointComponent;
-import com.lataverne.towerdefense.data.LevelData;
-import com.lataverne.towerdefense.data.TowerData;
 import com.lataverne.towerdefense.enums.EntityType;
-import com.lataverne.towerdefense.manager.LevelManager;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 public class TowerDefenseFactory implements EntityFactory {
@@ -93,7 +81,7 @@ public class TowerDefenseFactory implements EntityFactory {
                 .at(data.getX(), data.getY())
                 .type(EntityType.TOWER)
                 .view("droplet.png")
-                .with(new TowerComponent(100, 100))
+                .with(new TowerComponent(0))
                 .build();
         entityCache.add(tower);
         return tower;
@@ -101,12 +89,10 @@ public class TowerDefenseFactory implements EntityFactory {
 
     @Spawns("Enemy")
     public Entity newEnemy(SpawnData data){
-        LevelData levelData = LevelManager.getInstance().getLevelData();
-
         Entity enemy = FXGL.entityBuilder(data)
                 .type(EntityType.ENEMY)
                 .viewWithBBox(new Rectangle(32, 32))
-                .with(new EnemyComponent(levelData.enemyHealth(), levelData.enemySpeed(), levelData.startDirection()))
+                .with(new EnemyComponent())
                 .bbox(BoundingShape.box(32, 32))
                 .collidable()
                 .build();

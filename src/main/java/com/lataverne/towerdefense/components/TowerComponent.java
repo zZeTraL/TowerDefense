@@ -1,33 +1,24 @@
 package com.lataverne.towerdefense.components;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.lataverne.towerdefense.data.LevelData;
 import com.lataverne.towerdefense.data.TowerData;
+import com.lataverne.towerdefense.manager.LevelManager;
 
-public class TowerComponent extends Component implements EntityInterface {
+public class TowerComponent extends Component {
 
     private final TowerData towerData;
 
-    public TowerComponent(int health, int radius){
-        towerData = new TowerData(health, radius);
-    }
+    public TowerComponent(int num){
 
-    // Methods from EntityInterface
-    @Override
-    public void attack(){
-        System.out.println("Turret with ID (" + this + ") attack");
-    }
+        LevelData levelData = LevelManager.getInstance().getLevelData();
+        towerData = FXGL.getAssetLoader().loadJSON("data/tower" + num + ".json", TowerData.class).get();
 
-    @Override
-    public void print() {
-        System.out.println(
-                "\nRadius: " + towerData.radius() + "\nHealth: " + towerData.health() + "\n"
-        );
+        System.out.println(towerData.radius());
     }
 
     // Method from Component abstract class
     @Override
-    public void onUpdate(double tpf) {
-        if(!update) return;
-        attack();
-    }
+    public void onUpdate(double tpf) {}
 }

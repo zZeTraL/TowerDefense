@@ -1,0 +1,7 @@
+{
+  "health": 100,
+  "radius": 10,
+  "cost": 200,
+  "attackRate": 1,
+  "damage": 2
+}

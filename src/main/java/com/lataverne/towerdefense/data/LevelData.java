@@ -1,12 +1,20 @@
 package com.lataverne.towerdefense.data;
 
 public record LevelData(
+        // System data
         String name,
         String map,
         int money,
-        int spawnRate,
+
+        // Wave data
         int amountOfEnemy,
-        double enemySpeed,
+        int scorePerKill,
+
+        // Enemy data
         int enemyHealth,
+        double enemySpeed,
+        double enemySpawnRate,
+
+        // First direction indication
         String startDirection
 ) {}

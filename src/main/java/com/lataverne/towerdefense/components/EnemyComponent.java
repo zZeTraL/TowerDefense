@@ -2,7 +2,9 @@ package com.lataverne.towerdefense.components;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.lataverne.towerdefense.data.EnemyData;
+import com.lataverne.towerdefense.data.LevelData;
 import com.lataverne.towerdefense.enums.EntityType;
+import com.lataverne.towerdefense.manager.LevelManager;
 import javafx.geometry.Point2D;
 
 public class EnemyComponent extends Component {
@@ -10,9 +12,11 @@ public class EnemyComponent extends Component {
     private EnemyData enemyData;
     private String direction;
 
-    public EnemyComponent(int health, double moveSpeed, String direction){
-        enemyData = new EnemyData(health, moveSpeed);
-        this.direction = direction;
+    public EnemyComponent(){
+        // On get les données du niveau associé
+        LevelData levelData = LevelManager.getInstance().getLevelData();
+        enemyData = new EnemyData(levelData.enemyHealth(), levelData.enemySpeed());
+        this.direction = levelData.startDirection();
     }
 
     // Getters

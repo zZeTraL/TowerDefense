@@ -2,9 +2,10 @@
   "name": "Level 0",
   "map": "tmx/level0.tmx",
   "money": 500,
-  "spawnRate": 1.25,
-  "amountOfEnemy": 15,
-  "enemyHealth": 100,
+  "amountOfEnemy": 10,
+  "scorePerKill": 5,
+  "enemyHealth": 25,
   "enemySpeed": 0.75,
+  "enemySpawnRate": 1.25,
   "startDirection": "right"
 }

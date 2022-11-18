@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.ui.UIFactoryService;
 import com.lataverne.towerdefense.cache.EntityCache;
 import com.lataverne.towerdefense.components.EnemyComponent;
+import com.lataverne.towerdefense.components.TowerComponent;
 import com.lataverne.towerdefense.components.WayPointComponent;
 import com.lataverne.towerdefense.enums.EntityType;
 import com.lataverne.towerdefense.manager.LevelManager;
@@ -57,8 +58,8 @@ public class TowerDefense extends GameApplication {
         getGameWorld().addEntityFactory(new TowerDefenseFactory());
         Level level = levelManager.setLevel(0);
 
-        //FXGL.spawn("Enemy", 32, 285);
-
+        FXGL.spawn("Tower", 32, 200);
+        System.out.println();
     }
 
     @Override
