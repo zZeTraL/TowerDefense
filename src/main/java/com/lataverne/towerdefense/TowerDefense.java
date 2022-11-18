@@ -5,17 +5,20 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.level.Level;
+import com.almasb.fxgl.ui.UIFactoryService;
 import com.lataverne.towerdefense.cache.EntityCache;
-import com.lataverne.towerdefense.components.EntityInterface;
-import com.lataverne.towerdefense.components.TurretComponent;
+import com.lataverne.towerdefense.components.EnemyComponent;
+import com.lataverne.towerdefense.components.WayPointComponent;
+import com.lataverne.towerdefense.enums.EntityType;
 import com.lataverne.towerdefense.manager.LevelManager;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.Map;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class TowerDefense extends GameApplication {
 
@@ -37,8 +40,10 @@ public class TowerDefense extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars){
         vars.put("score", 0);
+        vars.put("hp", 100);
         vars.put("level", 0);
-        vars.put("money", 500);
+        vars.put("levelName", "");
+        vars.put("money", 0);
     }
 
 
@@ -50,27 +55,70 @@ public class TowerDefense extends GameApplication {
 
         // We load our Factory to spawn entity
         getGameWorld().addEntityFactory(new TowerDefenseFactory());
-        Level level = levelManager.nextLevel();
-        FXGL.spawn("Tower", 0, 0);
-        entityCache.print();
+        Level level = levelManager.setLevel(0);
+
+        //FXGL.spawn("Enemy", 32, 285);
 
     }
 
     @Override
-    protected void initPhysics(){}
+    protected void initPhysics(){
+        FXGL.onCollision(EntityType.WAYPOINT, EntityType.ENEMY, (point, enemy) -> {
+            String direction = point.getComponent(WayPointComponent.class).getDirection();
+            enemy.getComponent(EnemyComponent.class).setDirection(direction);
+        });
+
+        FXGL.onCollision(EntityType.ENEMY, EntityType.FINISH_POINT, (enemy, end) -> {
+            FXGL.inc("hp", -2);
+            System.out.println(FXGL.getGameScene().getUINodes());
+            // TODO
+            //  - CHECK HP OF THE PLAYER
+            enemy.removeFromWorld();
+        });
+    }
 
     @Override
-    protected void onUpdate(double tpf){
-        if(!update) return;
-    }
+    protected void onUpdate(double tpf){}
 
     @Override
     protected void initUI(){
-        var level = FXGL.getWorldProperties().getInt("level");
-        Text text = new Text(20, 20, "LEVEL " + String.valueOf(level));
-        text.setScaleX(2);
-        text.setScaleY(2);
-        FXGL.getGameScene().addUINode(text);
+        UIFactoryService ui = FXGL.getUIFactoryService();
+        Text levelName = ui.newText("", Color.BLACK, 22);
+        Text hp = ui.newText("", Color.BLACK, 20);
+        Text money = ui.newText("", Color.BLACK, 20);
+        levelName.textProperty().bind(getsp("levelName"));
+        hp.textProperty().bind(getip("hp").asString());
+        money.textProperty().bind(getip("money").asString());
+
+        FXGL.addUINode(levelName, 0, 20);
+        FXGL.addUINode(hp, 0, 40);
+        FXGL.addUINode(money, 0, 60);
+    }
+
+    @Override
+    protected void initInput(){
+        FXGL.onKey(KeyCode.A, "nextLevel", () -> LevelManager.getInstance().nextLevel());
+        FXGL.onKey(KeyCode.R, "resetLevel", () -> LevelManager.getInstance().setLevel(0));
+
+        /*FXGL.onKey(KeyCode.S, "moveDown", () -> {
+            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
+            enemy.translateY(2);
+        });
+
+        FXGL.onKey(KeyCode.D, "moveRight", () -> {
+            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
+            enemy.translateX(2);
+        });
+
+        FXGL.onKey(KeyCode.Q, "moveLeft", () -> {
+            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
+            enemy.translateX(-2);
+        });
+
+        FXGL.onKey(KeyCode.W, "moveForward", () -> {
+            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
+            enemy.translateY(-2);
+        });*/
     }
 
     public static void main(String[] args) {

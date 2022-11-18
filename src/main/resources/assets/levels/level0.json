@@ -1,0 +1,10 @@
+{
+  "name": "Level 0",
+  "map": "tmx/level0.tmx",
+  "money": 500,
+  "spawnRate": 1.25,
+  "amountOfEnemy": 15,
+  "enemyHealth": 100,
+  "enemySpeed": 0.75,
+  "startDirection": "right"
+}

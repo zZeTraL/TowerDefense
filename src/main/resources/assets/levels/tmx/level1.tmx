@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
-<tileset version="1.9" tiledversion="1.9.2" name="NPU-Legen Town" tilewidth="32" tileheight="32" tilecount="1160" columns="8">
- <image source="Town.png" width="256" height="4640"/>
+<tileset version="1.9" tiledversion="1.9.2" name="NPU-Legen Town" tilewidth="32" tileheight="32" tilecount="1160" columns="8" firstgid="1">
+ <image firstgid=1 source="Town.png" width="256" height="4640"/>
 </tileset>
 <layer id="1" name="ground" width="30" height="20">
   <data encoding="csv">

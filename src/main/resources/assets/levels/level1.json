@@ -1,0 +1,7 @@
+{
+  "name": "Level 1",
+  "map": "tmx/level1.tmx",
+  "money": 1000,
+  "spawnRate": 2,
+  "amountOfEnemy": 20
+}
