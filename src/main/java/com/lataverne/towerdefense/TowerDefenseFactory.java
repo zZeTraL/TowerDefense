@@ -94,7 +94,7 @@ public class TowerDefenseFactory implements EntityFactory {
                 .bbox(BoundingShape.box(32, 32))
                 .collidable()
                 .build();
-        enemyCache.add(enemy, component.getEnemyData());
+        enemyCache.add(enemy, component);
         return enemy;
     }
 

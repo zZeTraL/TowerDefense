@@ -61,7 +61,6 @@ public class LevelManager {
             currentLevel = level;
             LevelData data = levelDataList.get(currentLevel);
             FXGL.set("money", data.money());
-            FXGL.set("levelName", data.name());
             Level tmp = FXGL.setLevelFromMap("tmx/level" + level + ".tmx");
             spawnEnemy(data);
             //System.out.println(TowerCache.getInstance().getCache());

@@ -42,7 +42,6 @@ public class TowerDefense extends GameApplication {
         vars.put("money", 0);
         vars.put("kill", 0);
         vars.put("level", 0);
-        vars.put("levelName", "");
     }
 
 

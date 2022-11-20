@@ -21,7 +21,7 @@ public class TowerCache {
         return instance;
     }
     public HashMap<Entity, TowerComponent> getCache(){ return cache; }
-    public TowerComponent getTowerComponentByEntity(Entity entity){
+    public TowerComponent getTowerComponent(Entity entity){
         TowerComponent result = null;
         for (Map.Entry<Entity, TowerComponent> entry : cache.entrySet()){
             Entity key = entry.getKey();
