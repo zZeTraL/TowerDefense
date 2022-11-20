@@ -43,5 +43,8 @@ public class EnemyCache {
         }
     }
 
+    // Methods
+    public void print(){ System.out.println(cache); }
+
 
 }

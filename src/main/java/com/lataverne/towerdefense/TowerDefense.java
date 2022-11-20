@@ -106,6 +106,10 @@ public class TowerDefense extends GameApplication {
     protected void initInput(){
         FXGL.onKey(KeyCode.A, "nextLevel", () -> LevelManager.getInstance().nextLevel());
         FXGL.onKey(KeyCode.R, "resetLevel", () -> LevelManager.getInstance().setLevel(0));
+        FXGL.onKeyDown(KeyCode.C, "printCache", () -> {
+            TowerCache.getInstance().print();
+            EnemyCache.getInstance().print();
+        });
 
         /*FXGL.onKey(KeyCode.S, "moveDown", () -> {
             Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
