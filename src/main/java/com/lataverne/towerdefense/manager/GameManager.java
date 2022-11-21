@@ -44,6 +44,9 @@ public class GameManager {
     public EnemyCache getEnemyCache(){ return enemyCache; }
     public TowerCache getTowerCache(){ return towerCache; }
 
+    public boolean isWaveStarted(){ return isWaveStarted; }
+    public boolean isCanBuild(){ return canBuild; }
+
     // Setters
 
     // Methods

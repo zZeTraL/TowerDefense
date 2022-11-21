@@ -108,11 +108,14 @@ public class TowerDefense extends GameApplication {
         });
 
         FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {
-            EnemyCache enemyCache = gameManager.getEnemyCache();
-            enemyCache.getCache().forEach((key, value) ->  {
-                key.removeFromWorld();
-            });
-            enemyCache.getCache().clear();
+            gameManager.check();
+            if(gameManager.isWaveStarted()){
+                EnemyCache enemyCache = gameManager.getEnemyCache();
+                enemyCache.getCache().forEach((key, value) ->  {
+                    key.removeFromWorld();
+                });
+                enemyCache.getCache().clear();
+            }
         });
     }
 
