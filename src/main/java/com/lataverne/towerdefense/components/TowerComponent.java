@@ -21,7 +21,7 @@ public class TowerComponent extends Component {
 
     public TowerComponent(int num){
         // je récupère les données qu'une tour au level n possède (vie/radius/etc...)
-        LevelData levelData = LevelManager.getInstance().getLevelData();
+        LevelData levelData = LevelManager.getInstance().getCurrentLevelData();
         // Le param num va changer en fonction du click sur le hud
         towerData = FXGL.getAssetLoader().loadJSON("data/tower" + num + ".json", TowerData.class).get();
 

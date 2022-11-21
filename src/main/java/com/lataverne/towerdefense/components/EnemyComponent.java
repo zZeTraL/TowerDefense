@@ -12,7 +12,7 @@ public class EnemyComponent extends Component {
 
     public EnemyComponent(){
         // On get les données du niveau actuel
-        LevelData levelData = LevelManager.getInstance().getLevelData();
+        LevelData levelData = LevelManager.getInstance().getCurrentLevelData();
         enemyData = new EnemyData(levelData.enemyHealth(), levelData.enemySpeed());
         this.direction = levelData.startDirection();
     }
@@ -28,7 +28,8 @@ public class EnemyComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        double speed = tpf * 45 * enemyData.moveSpeed();
+        double speed = enemyData.moveSpeed();
+        System.out.println(speed);
         switch (direction) {
             case "up" -> entity.translateY(-speed);
             case "down" -> entity.translateY(speed);

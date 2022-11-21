@@ -43,6 +43,8 @@ public class EnemyCache {
         }
     }
 
+    public void remove(Entity entity){ cache.remove(entity); }
+
     // Methods
     public void print(){ System.out.println(cache); }
 

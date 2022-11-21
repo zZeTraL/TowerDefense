@@ -4,12 +4,16 @@ import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.level.Level;
 import com.lataverne.towerdefense.cache.EnemyCache;
 import com.lataverne.towerdefense.cache.TowerCache;
 import com.lataverne.towerdefense.components.EnemyComponent;
 import com.lataverne.towerdefense.components.WayPointComponent;
+import com.lataverne.towerdefense.manager.GameManager;
 import com.lataverne.towerdefense.manager.LevelManager;
+import com.lataverne.towerdefense.manager.TowerManager;
+import com.lataverne.towerdefense.ui.SelectTowerPane;
 import com.lataverne.towerdefense.ui.TopInfoPane;
 import javafx.scene.input.KeyCode;
 
@@ -19,17 +23,14 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class TowerDefense extends GameApplication {
 
-    private static TowerCache towerCache;
-    private static EnemyCache enemyCache;
-    private static LevelManager levelManager;
-    private static Boolean update = false;
+    private static GameManager gameManager;
 
     @Override
     protected void initSettings(GameSettings settings){
         settings.setTitle("Tower Defense");
         settings.setVersion("build_0.1");
         settings.setWidth(20 * 50 + 115);
-        settings.setHeight(640);
+        settings.setHeight(15 * 50);
         settings.setAppIcon("logo.jpg");
         settings.setDefaultCursor(new CursorInfo("cursor.png", 0, 0));
         settings.setMainMenuEnabled(true);
@@ -42,19 +43,18 @@ public class TowerDefense extends GameApplication {
         vars.put("money", 0);
         vars.put("kill", 0);
         vars.put("level", 0);
+        vars.put("selectedTower", 0);
     }
 
 
     @Override
     protected void initGame(){
-        // Initialization of EntityCache and levelManager
-        towerCache = TowerCache.getInstance();
-        enemyCache = EnemyCache.getInstance();
-        levelManager = LevelManager.getInstance();
+        // Initialization of GameManager
+        gameManager = GameManager.getInstance();
 
         // We load our Factory to spawn entity
         getGameWorld().addEntityFactory(new TowerDefenseFactory());
-        Level level = levelManager.setLevel(0);
+        Level level = gameManager.getLevelManager().loadLevel(0);
 
         FXGL.spawn("Tower", 50, 200);
         /*
@@ -64,7 +64,6 @@ public class TowerDefense extends GameApplication {
         towerCache.getCache().get(entity).removeHealth(5);
         System.out.println(towerCache.getCache().get(entity).getHealth());
         **/
-
     }
 
     @Override
@@ -79,7 +78,11 @@ public class TowerDefense extends GameApplication {
             System.out.println(FXGL.getGameScene().getUINodes());
             // TODO
             //  - CHECK HP OF THE PLAYER
+            //  - REMOVE ENTITIES FROM ENEMY CACHE
+            gameManager.getEnemyCache().remove(enemy);
             enemy.removeFromWorld();
+
+            gameManager.check();
         });
     }
 
@@ -88,54 +91,32 @@ public class TowerDefense extends GameApplication {
 
     @Override
     protected void initUI(){
+        TowerManager.createTowersBox();
         FXGL.addUINode(new TopInfoPane());
-        /*UIFactoryService ui = FXGL.getUIFactoryService();
-        Text levelName = ui.newText("", Color.BLACK, 22);
-        Text hp = ui.newText("", Color.BLACK, 20);
-        Text money = ui.newText("", Color.BLACK, 20);
-        levelName.textProperty().bind(getsp("levelName"));
-        hp.textProperty().bind(getip("hp").asString());
-        money.textProperty().bind(getip("money").asString());
-
-        FXGL.addUINode(levelName, 0, 20);
-        FXGL.addUINode(hp, 0, 40);
-        FXGL.addUINode(money, 0, 60);*/
+        FXGL.addUINode(new SelectTowerPane());
     }
 
     @Override
     protected void initInput(){
+        // DEBUG KEYS
         FXGL.onKey(KeyCode.A, "nextLevel", () -> LevelManager.getInstance().nextLevel());
-        FXGL.onKey(KeyCode.R, "resetLevel", () -> LevelManager.getInstance().setLevel(0));
+        FXGL.onKey(KeyCode.R, "resetLevel", () -> LevelManager.getInstance().loadLevel(0));
+
         FXGL.onKeyDown(KeyCode.C, "printCache", () -> {
             TowerCache.getInstance().print();
             EnemyCache.getInstance().print();
         });
 
-        /*FXGL.onKey(KeyCode.S, "moveDown", () -> {
-            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
-            enemy.translateY(2);
+        FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {
+            EnemyCache enemyCache = gameManager.getEnemyCache();
+            enemyCache.getCache().forEach((key, value) ->  {
+                key.removeFromWorld();
+            });
+            enemyCache.getCache().clear();
         });
-
-        FXGL.onKey(KeyCode.D, "moveRight", () -> {
-            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
-            enemy.translateX(2);
-        });
-
-        FXGL.onKey(KeyCode.Q, "moveLeft", () -> {
-            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
-            enemy.translateX(-2);
-        });
-
-        FXGL.onKey(KeyCode.W, "moveForward", () -> {
-            Entity enemy = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
-            enemy.translateY(-2);
-        });*/
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
-    public static Boolean getUpdate(){ return update; }
-
 }

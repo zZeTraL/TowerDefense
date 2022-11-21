@@ -2,8 +2,6 @@ package com.lataverne.towerdefense.manager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.level.Level;
-import com.lataverne.towerdefense.cache.EnemyCache;
-import com.lataverne.towerdefense.cache.TowerCache;
 import com.lataverne.towerdefense.data.LevelData;
 import javafx.util.Duration;
 
@@ -13,17 +11,15 @@ import java.util.List;
 public class LevelManager {
 
     // Design pattern based on Singleton style
-    // Instance
     private static LevelManager instance;
 
     // Attributes
     private List<LevelData> levelDataList;
-    private int currentLevel;
     private int lastLevel;
 
+    // Constructor
     private LevelManager(){
         this.levelDataList = new ArrayList<>();
-        this.currentLevel = 0;
         this.lastLevel = 1;
 
         for (int i = 0; i <= lastLevel; i++) {
@@ -37,14 +33,55 @@ public class LevelManager {
     }
 
     // Getters
+
+    /**
+     * Fonction qui retourne l'instance de LevelManager
+     * @return LevelManager
+     */
     public static LevelManager getInstance(){
         if(instance == null) instance = new LevelManager();
         return instance;
     }
-    public int getCurrentLevel(){ return currentLevel; }
-    public LevelData getLevelData(){ return levelDataList.get(currentLevel); }
+
+    public boolean isMaxLevelReached(){ return FXGL.geti("level") == lastLevel; }
+
+    /**
+     * Fonction qui retourne le jeu de données d'un niveau indiqué
+     * @param index Le niveau souhaité
+     * @return LevelData
+     */
+    public LevelData getLevelData(int index){
+        if(index < 0 || index > levelDataList.size()) return null;
+        else return levelDataList.get(index);
+    }
+
+
+    /**
+     * Fonction qui retourne le jeu de données du niveau actuel
+     * @return LevelData
+     */
+    public LevelData getCurrentLevelData(){
+        return levelDataList.get(FXGL.geti("level"));
+    }
 
     // Setters
+
+    /**
+     * Fonction qui va charger le level {@code index} depuis notre liste de niveaux
+     * @param index index du level à charger
+     * @return Level
+     */
+    public Level loadLevel(int index){
+        if(index < 0 || index > levelDataList.size()) return null;
+        else {
+            LevelData levelData = levelDataList.get(index);
+            FXGL.set("levelName", levelData.name());
+            FXGL.set("level", index);
+            FXGL.set("kill", 0);
+            FXGL.set("money", levelData.money());
+            return FXGL.setLevelFromMap(levelData.map());
+        }
+    }
 
     // Methods
     public void spawnEnemy(LevelData data){
@@ -55,33 +92,18 @@ public class LevelManager {
         }, Duration.seconds(3));
     }
 
-    public Level setLevel(int level){
-        if(level < 0 || level > lastLevel) return null;
-        else {
-            currentLevel = level;
-            LevelData data = levelDataList.get(currentLevel);
-            FXGL.set("money", data.money());
-            Level tmp = FXGL.setLevelFromMap("tmx/level" + level + ".tmx");
-            spawnEnemy(data);
-            //System.out.println(TowerCache.getInstance().getCache());
-            return tmp;
-        }
-    }
-
-    public Level nextLevel() {
-        /*if(currentLevel + 1 > 10) System.out.println("Max level reached!");
-        else return FXGL.setLevelFromMap("tmx/level" + currentLevel + ".tmx");
-        return null;*/
-        if(currentLevel + 1 > lastLevel) {
+    public void nextLevel() {
+        int currentLevel = FXGL.geti("level");
+        if(isMaxLevelReached()) {
             System.out.println("Max level reached!");
         } else {
             currentLevel += 1;
-            LevelData data = levelDataList.get(currentLevel);
-            FXGL.set("levelName", data.name());
-            FXGL.set("money", data.money());
-            return FXGL.setLevelFromMap(data.map());
+            LevelData levelData = levelDataList.get(currentLevel);
+            FXGL.set("levelName", levelData.name());
+            FXGL.set("level", currentLevel);
+            FXGL.set("money", levelData.money());
+            FXGL.setLevelFromMap(levelData.map());
         }
-        return null;
     }
 
 }
