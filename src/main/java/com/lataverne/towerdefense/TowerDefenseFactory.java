@@ -10,10 +10,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.texture.Texture;
 import com.lataverne.towerdefense.cache.EnemyCache;
 import com.lataverne.towerdefense.cache.TowerCache;
-import com.lataverne.towerdefense.components.EnemyComponent;
-import com.lataverne.towerdefense.components.TowerButtonComponent;
-import com.lataverne.towerdefense.components.TowerComponent;
-import com.lataverne.towerdefense.components.WayPointComponent;
+import com.lataverne.towerdefense.components.*;
 import com.lataverne.towerdefense.data.TowerData;
 import com.lataverne.towerdefense.manager.TowerManager;
 import javafx.scene.paint.Color;
@@ -139,5 +136,12 @@ public class TowerDefenseFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("rangeIndicator")
+    public Entity newRangeIndicator(SpawnData data) {
+        return entityBuilder(data)
+                .with(new RangeIndicatorComponent())
+                .zIndex(Integer.MAX_VALUE)
+                .build();
+    }
 
 }

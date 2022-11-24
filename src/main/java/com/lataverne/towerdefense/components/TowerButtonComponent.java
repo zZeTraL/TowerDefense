@@ -5,7 +5,8 @@ import com.almasb.fxgl.entity.component.Component;
 import com.lataverne.towerdefense.TowerDefense;
 import com.lataverne.towerdefense.data.TowerData;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 
@@ -27,8 +28,18 @@ public class TowerButtonComponent extends Component {
     public void onAdded(){
         btn.setBackground(null);
         btn.setOnAction((ActionEvent e) ->  {
-            System.out.println(towerData.name());
+            FXGL.set("selectedTower", towerData.id());
+            System.out.println(FXGL.geti("selectedTower"));
         });
+
+        Label towerCostLabel = new Label(towerData.cost() + "");
+        towerCostLabel.setAlignment(Pos.CENTER);
+        towerCostLabel.setPrefSize(50, 15);
+        towerCostLabel.setTranslateX(15);
+        towerCostLabel.setTranslateY(63);
+        towerCostLabel.setStyle("-fx-background-color: #f2f2f2;-fx-background-radius: 12;-fx-text-fill: #1E8CB9;");
+
+        entity.getViewComponent().addChild(towerCostLabel);
         entity.getViewComponent().addChild(btn);
     }
 

@@ -1,9 +1,14 @@
 package com.lataverne.towerdefense.manager;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.lataverne.towerdefense.cache.EnemyCache;
 import com.lataverne.towerdefense.cache.TowerCache;
+import com.lataverne.towerdefense.components.RangeIndicatorComponent;
 import com.lataverne.towerdefense.data.LevelData;
+import com.lataverne.towerdefense.data.TowerData;
+import javafx.geometry.Point2D;
 
 public class GameManager {
 
@@ -19,6 +24,9 @@ public class GameManager {
     // Important variables
     private boolean canBuild;
     private boolean isWaveStarted;
+
+    private Entity rangeIndicatorEntity;
+    private RangeIndicatorComponent rangeIndicatorComponent;
 
     // Constructor
     private GameManager(){
@@ -48,6 +56,11 @@ public class GameManager {
     public boolean isCanBuild(){ return canBuild; }
 
     // Setters
+    public void setRangeIndicatorEntity(Entity entity){
+        this.rangeIndicatorEntity = entity;
+        this.rangeIndicatorComponent = rangeIndicatorEntity.getComponent(RangeIndicatorComponent.class);
+        hideRangeIndicator();
+    }
 
     // Methods
 
@@ -91,18 +104,61 @@ public class GameManager {
      * </ul>
      */
     public void check(){
+        int playerHealth = FXGL.geti("hp");
         if(isWaveStarted){
-            // Si la wave est terminé on a gagné !
-            if(enemyCache.getCache().size() == 0){
-                isWaveStarted = false;
-                FXGL.inc("level", 1);
+            if(playerHealth != 0){
+                // Si la wave est terminé on a gagné !
+                if(enemyCache.getCache().size() == 0){
+                    isWaveStarted = false;
+                    FXGL.inc("level", 1);
+                } else {
+                    System.out.println("There are few enemies remaining to complete this level");
+                }
             } else {
-                System.out.println("There are few enemies remaining to complete this level");
+                isWaveStarted = false;
+                enemyCache.getCache().forEach((key, value) -> key.removeFromWorld());
+                enemyCache.getCache().clear();
+                System.out.println("PLAYER HAS 0 HP !!!");
             }
         } else {
             System.out.println("No wave has been started yet");
         }
         //return enemyCache.getCache().size() == 0;
+    }
+
+    public void onMouseMove(){
+        int selectedTower = FXGL.geti("selectedTower");
+        if(selectedTower != -1){
+            int money = FXGL.geti("money");
+            TowerData towerData = towerManager.getTowerData(selectedTower);
+
+            // Si je n'ai pas assez d'argent pour acheter la tour
+            if(money < towerData.cost()) {
+                System.out.println("Not enought money");
+            }
+
+            int[] towerSize = { towerData.width(), towerData.height() };
+            Point2D position = FXGL.getInput().getMousePositionWorld();
+            double[] coordinates = { position.getX(), position.getY() };
+
+            rangeIndicatorComponent.updateIndicator(towerManager.getTowerData(selectedTower));
+
+            rangeIndicatorEntity.setX(coordinates[0] - towerSize[0] / 2.0);
+            rangeIndicatorEntity.setY(coordinates[1] - towerSize[1] / 2.0);
+
+        }
+
+    }
+
+    public void buildTower(){
+        if(canBuild){
+
+        }
+    }
+
+    public void hideRangeIndicator(){
+        rangeIndicatorEntity.setX(-1000);
+        rangeIndicatorEntity.setY(-1000);
     }
 
 

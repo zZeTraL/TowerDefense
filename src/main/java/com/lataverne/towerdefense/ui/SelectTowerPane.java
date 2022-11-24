@@ -1,18 +1,12 @@
 package com.lataverne.towerdefense.ui;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.lataverne.towerdefense.manager.GameManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-import java.util.List;
-
 public class SelectTowerPane extends VBox {
-
-    private static final int paneWidth = 501;
-    private static final int paneHeight = 341;
-    private List<Label> towerLabelList;
 
     public SelectTowerPane() {
         super(5);
