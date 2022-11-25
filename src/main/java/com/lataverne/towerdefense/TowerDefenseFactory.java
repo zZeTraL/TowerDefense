@@ -30,7 +30,7 @@ public class TowerDefenseFactory implements EntityFactory {
     private final TowerCache towerCache = gameManager.getTowerCache();
     private final EnemyCache enemyCache = gameManager.getEnemyCache();
     private final TowerManager towerManager = gameManager.getTowerManager();
-    private int amountOfButtonCreated = 0;
+    public static int amountOfButtonCreated = 0;
 
     /*@Spawns("")
     public Entity newSpa(SpawnData data) {
@@ -141,7 +141,7 @@ public class TowerDefenseFactory implements EntityFactory {
     @Spawns("selectTower")
     public Entity newTowersBox(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .at(1000, 0)
+                .at(960, 0)
                 .with(new IrremovableComponent())
                 .view("ui/right/chooseBg.png")
                 .neverUpdated()
@@ -154,10 +154,10 @@ public class TowerDefenseFactory implements EntityFactory {
         amountOfButtonCreated += 1;
 
         Texture mainTexture = FXGL.texture(towerData.img());
-        mainTexture.setTranslateX((80 - towerData.width()) / 2.0);
+        mainTexture.setTranslateX((-towerData.width()) / 2.0);
         mainTexture.setTranslateY((80 - towerData.height()) / 2.0);
         Texture backgroundTexture = FXGL.texture("ui/right/btnBg.png", 105, 105);
-        backgroundTexture.setTranslateX((80 - backgroundTexture.getWidth()) / 2);
+        backgroundTexture.setTranslateX((-backgroundTexture.getWidth()) / 2);
         backgroundTexture.setTranslateY((80 - backgroundTexture.getHeight()) / 2);
 
         return entityBuilder(data)

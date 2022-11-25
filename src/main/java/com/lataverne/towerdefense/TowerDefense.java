@@ -37,8 +37,8 @@ public class TowerDefense extends GameApplication {
     protected void initSettings(GameSettings settings){
         settings.setTitle("Tower Defense");
         settings.setVersion("build_0.1");
-        settings.setWidth(20 * 50 + 115);
-        settings.setHeight(15 * 50);
+        settings.setWidth(20 * 48 + 115);
+        settings.setHeight(20 * 32);
         settings.setAppIcon("logo.jpg");
         settings.setDefaultCursor(new CursorInfo("cursor.png", 0, 0));
         settings.setMainMenuEnabled(true);
@@ -52,6 +52,7 @@ public class TowerDefense extends GameApplication {
         vars.put("kill", 0);
         vars.put("level", 0);
         vars.put("selectedTower", -1);
+        vars.put("levelComplete", false);
     }
 
 
@@ -66,11 +67,8 @@ public class TowerDefense extends GameApplication {
         enemyCache = gameManager.getEnemyCache();
         towerCache = gameManager.getTowerCache();
 
-        Level level = levelManager.loadLevel(0);
+        levelManager.loadLevel(0);
         FXGL.spawn("Tower", 50, 200);
-
-        Entity rangeIndicator = FXGL.spawn("rangeIndicator");
-        gameManager.setRangeIndicatorEntity(rangeIndicator);
 
         /*
         TowerComponent searchTowerByEntity = towerCache.getTowerComponentByEntity(entity);
@@ -168,6 +166,11 @@ public class TowerDefense extends GameApplication {
             }
         });
     }
+
+    /*public static void spawnEntities(){
+        Entity rangeIndicator = FXGL.spawn("rangeIndicator");
+        gameManager.setRangeIndicatorEntity(rangeIndicator);
+    }*/
 
     public static void main(String[] args) {
         launch(args);

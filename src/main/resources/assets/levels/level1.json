@@ -1,6 +1,6 @@
 {
   "name": "Level 1",
-  "map": "tmx/level0.tmx",
+  "map": "tmx/level1.tmx",
   "money": 500,
   "amountOfEnemy": 10,
   "scorePerKill": 5,

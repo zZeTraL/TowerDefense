@@ -20,7 +20,7 @@ public class RangeIndicatorComponent extends Component {
     private Texture texture;
     private Circle circle;
 
-    private TowerData lastTowerData;
+    //private TowerData lastTowerData;
 
     public RangeIndicatorComponent(){
         okFill = new RadialGradient(

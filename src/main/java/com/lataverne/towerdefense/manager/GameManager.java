@@ -28,7 +28,8 @@ public class GameManager {
     // Important variables
     private boolean canBuild;
     private boolean isWaveStarted;
-    private int enemyToSpawn;
+    private boolean pause;
+
     // range Indicator
     private Entity rangeIndicatorEntity;
     private RangeIndicatorComponent rangeIndicatorComponent;
@@ -47,6 +48,7 @@ public class GameManager {
         // Attributes
         this.canBuild = true;
         this.isWaveStarted = false;
+        this.pause = false;
 
         this.validPlace = new Rectangle2D(0, 0, 975, 600);
     }
@@ -64,6 +66,8 @@ public class GameManager {
 
     public boolean isWaveStarted(){ return isWaveStarted; }
     public boolean isCanBuild(){ return canBuild; }
+
+    public Entity getRangeIndicatorEntity(){ return rangeIndicatorEntity; }
 
     // Setters
     public void setRangeIndicatorEntity(Entity entity){
@@ -88,12 +92,23 @@ public class GameManager {
     public void start(){
         if(!isWaveStarted){
             if(!levelManager.isMaxLevelReached()){
-                isWaveStarted = true;
                 if (FXGL.geti("level") == 0) {
+                    isWaveStarted = true;
                     LevelData levelData = levelManager.getCurrentLevelData();
                     levelManager.spawnEnemy(levelData);
                 } else {
+                    System.out.println("clear all !!!");
+                    FXGL.set("levelComplete", false);
+                    isWaveStarted = true;
                     levelManager.nextLevel();
+                    levelManager.spawnEnemy(levelManager.getCurrentLevelData());
+                    /*if(FXGL.getb("levelComplete")){
+                        System.out.println("clear all !!!");
+                        FXGL.set("levelComplete", false);
+                    } else {
+                        isWaveStarted = true;
+                        levelManager.nextLevel();
+                    }*/
                 }
             } else {
                 System.out.println("Max Level Reached");
@@ -124,6 +139,7 @@ public class GameManager {
                 if(enemyCache.getCache().size() == 0 && levelManager.getAmountOfEnemySpawned() == levelManager.getCurrentLevelData().amountOfEnemy()){
                     isWaveStarted = false;
                     FXGL.inc("level", 1);
+                    FXGL.set("levelComplete", true);
                     System.out.println("Level complete!");
                 } else {
                     System.out.println("There are few enemies remaining to complete this level");
@@ -209,6 +225,16 @@ public class GameManager {
     public void hideRangeIndicator(){
         rangeIndicatorEntity.setX(-1000);
         rangeIndicatorEntity.setY(-1000);
+    }
+
+    public void pause(){
+        if(!pause){
+            pause = true;
+            FXGL.getGameController().pauseEngine();
+        } else {
+            pause = false;
+            FXGL.getGameController().resumeEngine();
+        }
     }
 
 

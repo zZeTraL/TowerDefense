@@ -1,7 +1,12 @@
 package com.lataverne.towerdefense.manager;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
+import com.lataverne.towerdefense.TowerDefense;
+import com.lataverne.towerdefense.TowerDefenseFactory;
+import com.lataverne.towerdefense.components.RangeIndicatorComponent;
+import com.lataverne.towerdefense.components.TowerButtonComponent;
 import com.lataverne.towerdefense.data.LevelData;
 import javafx.util.Duration;
 
@@ -21,10 +26,10 @@ public class LevelManager {
     // Constructor
     private LevelManager(){
         this.levelDataList = new ArrayList<>();
-        this.lastLevel = 1;
+        this.lastLevel = 2;
         this.amountOfEnemySpawned = 0;
 
-        for (int i = 0; i <= lastLevel; i++) {
+        for (int i = 0; i < lastLevel; i++) {
             LevelData data;
             data = FXGL.getAssetLoader().loadJSON("levels/level" + i + ".json", LevelData.class).get();
             levelDataList.add(data);
@@ -75,19 +80,25 @@ public class LevelManager {
      * @param index index du level à charger
      * @return Level
      */
-    public Level loadLevel(int index){
-        if(index < 0 || index > levelDataList.size()) return null;
-        else {
+    public void loadLevel(int index){
+        if(index >= 0 && index <= levelDataList.size()) {
+            amountOfEnemySpawned = 0;
             LevelData levelData = levelDataList.get(index);
             FXGL.set("levelName", levelData.name());
             FXGL.set("level", index);
             FXGL.set("kill", 0);
             FXGL.set("money", levelData.money());
-            return FXGL.setLevelFromMap(levelData.map());
+            FXGL.setLevelFromMap(levelData.map());
+            spawnEntities();
         }
     }
 
     // Methods
+    public void spawnEntities(){
+        Entity rangeIndicator = FXGL.spawn("rangeIndicator");
+        GameManager.getInstance().setRangeIndicatorEntity(rangeIndicator);
+    }
+
     public void spawnEnemy(LevelData data){
         FXGL.runOnce(() -> {
             FXGL.run(() -> {
@@ -98,16 +109,10 @@ public class LevelManager {
     }
 
     public void nextLevel() {
-        int currentLevel = FXGL.geti("level");
         if(isMaxLevelReached()) {
             System.out.println("Max level reached!");
         } else {
-            currentLevel += 1;
-            LevelData levelData = levelDataList.get(currentLevel);
-            FXGL.set("levelName", levelData.name());
-            FXGL.set("level", currentLevel);
-            FXGL.set("money", levelData.money());
-            FXGL.setLevelFromMap(levelData.map());
+            loadLevel(FXGL.geti("level"));
         }
     }
 

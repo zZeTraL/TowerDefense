@@ -35,7 +35,7 @@ public class TowerButtonComponent extends Component {
         Label towerCostLabel = new Label(towerData.cost() + "");
         towerCostLabel.setAlignment(Pos.CENTER);
         towerCostLabel.setPrefSize(50, 15);
-        towerCostLabel.setTranslateX(15);
+        towerCostLabel.setTranslateX(-50);
         towerCostLabel.setTranslateY(63);
         towerCostLabel.setStyle("-fx-background-color: #f2f2f2;-fx-background-radius: 12;-fx-text-fill: #1E8CB9;");
 
