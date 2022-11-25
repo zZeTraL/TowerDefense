@@ -16,11 +16,13 @@ public class LevelManager {
     // Attributes
     private List<LevelData> levelDataList;
     private int lastLevel;
+    private int amountOfEnemySpawned;
 
     // Constructor
     private LevelManager(){
         this.levelDataList = new ArrayList<>();
         this.lastLevel = 1;
+        this.amountOfEnemySpawned = 0;
 
         for (int i = 0; i <= lastLevel; i++) {
             LevelData data;
@@ -64,6 +66,8 @@ public class LevelManager {
         return levelDataList.get(FXGL.geti("level"));
     }
 
+    public int getAmountOfEnemySpawned(){ return amountOfEnemySpawned; }
+
     // Setters
 
     /**
@@ -87,7 +91,8 @@ public class LevelManager {
     public void spawnEnemy(LevelData data){
         FXGL.runOnce(() -> {
             FXGL.run(() -> {
-                FXGL.spawn("Enemy", -64, 288);
+                FXGL.spawn("Enemy", -64, 320);
+                this.amountOfEnemySpawned += 1;
             }, Duration.seconds(data.enemySpawnRate()), data.amountOfEnemy());
         }, Duration.seconds(3));
     }

@@ -3,6 +3,8 @@ package com.lataverne.towerdefense.components;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.Texture;
 import com.lataverne.towerdefense.data.TowerData;
 import javafx.scene.paint.Color;
@@ -36,8 +38,7 @@ public class RangeIndicatorComponent extends Component {
     public void onAdded() {
         //图片
         texture = FXGL.texture("tower/arrow/icon.png");
-        //entity.getBoundingBoxComponent().addHitBox(
-        //        new HitBox(BoundingShape.box(texture.getWidth(), texture.getHeight())));
+        entity.getBoundingBoxComponent().addHitBox(new HitBox(BoundingShape.box(texture.getWidth(), texture.getHeight())));
         circle = new Circle(100, disabledFill);
         circle.setTranslateX(texture.getWidth() / 2.0);
         circle.setTranslateY(texture.getHeight() / 2.0);
@@ -50,12 +51,12 @@ public class RangeIndicatorComponent extends Component {
     }
 
     public void updateIndicator(TowerData towerData) {
-        System.out.println("here");
+        //System.out.println("here");
         texture.setImage(FXGL.image(towerData.img()));
         circle.setTranslateX(texture.getWidth() / 2.0);
         circle.setTranslateY(texture.getHeight() / 2.0);
         //circle.setRadius(towerData.bulletData().range());
-        circle.setRadius(towerData.radius());
+        circle.setRadius(towerData.bulletData().range());
     }
 
 }

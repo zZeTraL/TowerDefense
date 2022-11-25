@@ -16,5 +16,6 @@ public record LevelData(
         double enemySpawnRate,
 
         // First direction indication
-        String startDirection
+        String startDirection,
+        PathData[] pathData
 ) {}

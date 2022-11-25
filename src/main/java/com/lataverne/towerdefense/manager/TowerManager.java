@@ -4,15 +4,14 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.SpawnData;
 import com.lataverne.towerdefense.data.TowerData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TowerManager {
 
     private static TowerManager instance;
     private Map<String, TowerData> towerDataMap;
+
     private TowerManager(){
         this.towerDataMap = new HashMap<>();
         for (int i = 0; i < 2; i++) {

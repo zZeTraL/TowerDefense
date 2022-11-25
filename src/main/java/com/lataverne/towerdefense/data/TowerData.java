@@ -8,8 +8,6 @@ public record TowerData(
         int height,
 
         int health,
-        int radius,
         int cost,
-        double attackRate,
-        double damage
+        BulletData bulletData
 ) {}

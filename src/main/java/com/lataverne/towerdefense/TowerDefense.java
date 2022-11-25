@@ -47,7 +47,7 @@ public class TowerDefense extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars){
         vars.put("score", 0);
-        vars.put("hp", 5);
+        vars.put("hp", 11);
         vars.put("money", 0);
         vars.put("kill", 0);
         vars.put("level", 0);
@@ -99,6 +99,24 @@ public class TowerDefense extends GameApplication {
 
             gameManager.check();
         });
+
+        FXGL.onCollision(EntityType.BULLET, EntityType.ENEMY, (bullet, enemy) -> {
+            EnemyComponent enemyComponent = enemy.getComponent(EnemyComponent.class);
+            enemyComponent.removeHealth(bullet.getObject("bulletData"));
+            if (enemyComponent.isDead()) {
+                FXGL.inc("kill", 1);
+                enemyCache.getCache().remove(enemy);
+                enemy.removeFromWorld();
+                gameManager.check();
+                return;
+            }
+            bullet.removeFromWorld();
+        });
+
+        FXGL.onCollision(EntityType.TOWER, EntityType.EMPTY, (tower, empty) -> {
+
+        });
+
     }
 
     @Override
@@ -124,7 +142,7 @@ public class TowerDefense extends GameApplication {
                 FXGL.set("selectedTower", -1);
                 gameManager.hideRangeIndicator();
             } else {
-                gameManager.buildTower();
+                if(FXGL.geti("selectedTower") != -1) gameManager.buildTower();
             }
 
         });
@@ -136,6 +154,7 @@ public class TowerDefense extends GameApplication {
         FXGL.onKeyDown(KeyCode.C, "printCache", () -> {
             TowerCache.getInstance().print();
             EnemyCache.getInstance().print();
+            System.out.println(enemyCache.getCache().size());
         });
 
         FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {

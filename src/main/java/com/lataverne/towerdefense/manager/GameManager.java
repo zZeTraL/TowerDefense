@@ -3,12 +3,16 @@ package com.lataverne.towerdefense.manager;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.lataverne.towerdefense.EntityType;
 import com.lataverne.towerdefense.cache.EnemyCache;
 import com.lataverne.towerdefense.cache.TowerCache;
 import com.lataverne.towerdefense.components.RangeIndicatorComponent;
 import com.lataverne.towerdefense.data.LevelData;
 import com.lataverne.towerdefense.data.TowerData;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+
+import java.util.List;
 
 public class GameManager {
 
@@ -24,9 +28,13 @@ public class GameManager {
     // Important variables
     private boolean canBuild;
     private boolean isWaveStarted;
-
+    private int enemyToSpawn;
+    // range Indicator
     private Entity rangeIndicatorEntity;
     private RangeIndicatorComponent rangeIndicatorComponent;
+    // mouse position
+    private Point2D mousePosition;
+    private Rectangle2D validPlace;
 
     // Constructor
     private GameManager(){
@@ -39,6 +47,8 @@ public class GameManager {
         // Attributes
         this.canBuild = true;
         this.isWaveStarted = false;
+
+        this.validPlace = new Rectangle2D(0, 0, 975, 600);
     }
 
     // Getters
@@ -108,9 +118,13 @@ public class GameManager {
         if(isWaveStarted){
             if(playerHealth != 0){
                 // Si la wave est terminé on a gagné !
-                if(enemyCache.getCache().size() == 0){
+                System.out.println(levelManager.getAmountOfEnemySpawned());
+                System.out.println(levelManager.getCurrentLevelData().amountOfEnemy());
+                System.out.println(enemyCache.getCache().size());
+                if(enemyCache.getCache().size() == 0 && levelManager.getAmountOfEnemySpawned() == levelManager.getCurrentLevelData().amountOfEnemy()){
                     isWaveStarted = false;
                     FXGL.inc("level", 1);
+                    System.out.println("Level complete!");
                 } else {
                     System.out.println("There are few enemies remaining to complete this level");
                 }
@@ -123,7 +137,6 @@ public class GameManager {
         } else {
             System.out.println("No wave has been started yet");
         }
-        //return enemyCache.getCache().size() == 0;
     }
 
     public void onMouseMove(){
@@ -131,28 +144,65 @@ public class GameManager {
         if(selectedTower != -1){
             int money = FXGL.geti("money");
             TowerData towerData = towerManager.getTowerData(selectedTower);
-
-            // Si je n'ai pas assez d'argent pour acheter la tour
-            if(money < towerData.cost()) {
-                System.out.println("Not enought money");
-            }
-
             int[] towerSize = { towerData.width(), towerData.height() };
-            Point2D position = FXGL.getInput().getMousePositionWorld();
-            double[] coordinates = { position.getX(), position.getY() };
+            this.mousePosition = FXGL.getInput().getMousePositionWorld();
 
             rangeIndicatorComponent.updateIndicator(towerManager.getTowerData(selectedTower));
+            rangeIndicatorEntity.setX(mousePosition.getX() - towerSize[0] / 2.0);
+            rangeIndicatorEntity.setY(mousePosition.getY() - towerSize[1] / 2.0);
 
-            rangeIndicatorEntity.setX(coordinates[0] - towerSize[0] / 2.0);
-            rangeIndicatorEntity.setY(coordinates[1] - towerSize[1] / 2.0);
+            if(rangeIndicatorEntity.isWithin(validPlace)){
+                // Si je n'ai pas assez d'argent pour acheter la tour
+                if(money < towerData.cost()) {
+                    System.out.println("Not enought money");
+                    canBuild = false;
+                    rangeIndicatorComponent.canBuild(false);
+                } else {
+                    //System.out.println(FXGL.getGameWorld().getSingleton(EntityType.EMPTY));
+                    List<Entity> towerEntities = FXGL.getGameWorld().getEntitiesByType(EntityType.TOWER);
+                    //System.out.print(towerEntities);
+                    Entity emptyEntity = FXGL.getGameWorld().getSingleton(EntityType.EMPTY);
+
+                    for (Entity towerEntity : towerEntities) {
+                        if (towerEntity.isColliding(rangeIndicatorEntity)) {
+                            //System.out.print("Collision detected!");
+                            canBuild = false;
+                            rangeIndicatorComponent.canBuild(false);
+                            return;
+                        }
+                    }
+
+                    if (rangeIndicatorEntity.isColliding(emptyEntity)) {
+                        canBuild = false;
+                        rangeIndicatorComponent.canBuild(false);
+                        return;
+                    }
+
+                    canBuild = true;
+                    rangeIndicatorComponent.canBuild(true);
+
+                }
+            } else {
+                canBuild = false;
+                rangeIndicatorComponent.canBuild(false);
+                hideRangeIndicator();
+            }
+
+
 
         }
-
     }
 
     public void buildTower(){
         if(canBuild){
-
+            TowerData towerData = towerManager.getTowerData(FXGL.geti("selectedTower"));
+            int[] towerSize = { towerData.width(), towerData.height() };
+            if(towerData.cost() <= FXGL.geti("money")){
+                FXGL.inc("money", -towerData.cost());
+                FXGL.spawn("Tower", mousePosition.getX() - towerSize[0] / 2.0, mousePosition.getY() - towerSize[1] / 2.0);
+                canBuild = false;
+                rangeIndicatorComponent.canBuild(false);
+            }
         }
     }
 

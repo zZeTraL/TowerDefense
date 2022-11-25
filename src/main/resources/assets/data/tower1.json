@@ -4,11 +4,17 @@
   "img": "tower/ice/icon.png",
   "width": 45,
   "height": 89,
-
-
   "health": 100,
-  "radius": 100,
-  "cost": 1000,
-  "attackRate": 1,
-  "damage": 5
+  "cost": 100,
+
+  "bulletData": {
+    "img": "tower/arrow/bullet.png",
+    "width": 50,
+    "height": 10,
+    "damage": 10,
+    "range": 300,
+    "speed": 600,
+    "attackRate": 1
+  }
+
 }
