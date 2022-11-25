@@ -1,6 +1,5 @@
 package com.lataverne.towerdefense.ui;
 
-import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
 
 public class Button extends Label {
@@ -13,7 +12,6 @@ public class Button extends Label {
             setStyle("-fx-background-image: url('assets/textures/ui/" + imageName);
         });
         setOnMouseClicked(e -> {
-            FXGL.play("select.wav");
             action.run();
         });
         managedProperty().bind(visibleProperty());

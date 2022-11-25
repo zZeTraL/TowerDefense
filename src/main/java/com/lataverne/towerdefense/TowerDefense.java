@@ -12,6 +12,7 @@ import com.lataverne.towerdefense.cache.TowerCache;
 import com.lataverne.towerdefense.components.EnemyComponent;
 import com.lataverne.towerdefense.components.RangeIndicatorComponent;
 import com.lataverne.towerdefense.components.WayPointComponent;
+import com.lataverne.towerdefense.manager.FileManager;
 import com.lataverne.towerdefense.manager.GameManager;
 import com.lataverne.towerdefense.manager.LevelManager;
 import com.lataverne.towerdefense.manager.TowerManager;
@@ -46,8 +47,8 @@ public class TowerDefense extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars){
-        vars.put("score", 0);
-        vars.put("hp", 11);
+        //vars.put("score", 0);
+        vars.put("hp", 1);
         vars.put("money", 0);
         vars.put("kill", 0);
         vars.put("level", 0);
@@ -68,15 +69,6 @@ public class TowerDefense extends GameApplication {
         towerCache = gameManager.getTowerCache();
 
         levelManager.loadLevel(0);
-        FXGL.spawn("Tower", 50, 200);
-
-        /*
-        TowerComponent searchTowerByEntity = towerCache.getTowerComponentByEntity(entity);
-        System.out.println(searchTowerByEntity.getHealth());
-        System.out.println(towerCache.getCache().get(entity).getHealth());
-        towerCache.getCache().get(entity).removeHealth(5);
-        System.out.println(towerCache.getCache().get(entity).getHealth());
-        **/
     }
 
     @Override
@@ -88,13 +80,8 @@ public class TowerDefense extends GameApplication {
 
         FXGL.onCollision(EntityType.ENEMY, EntityType.FINISH_POINT, (enemy, end) -> {
             FXGL.inc("hp", -1);
-            System.out.println(FXGL.getGameScene().getUINodes());
-            // TODO
-            //  - CHECK HP OF THE PLAYER
-            //  - REMOVE ENTITIES FROM ENEMY CACHE
             enemyCache.remove(enemy);
             enemy.removeFromWorld();
-
             gameManager.check();
         });
 
@@ -110,11 +97,6 @@ public class TowerDefense extends GameApplication {
             }
             bullet.removeFromWorld();
         });
-
-        FXGL.onCollision(EntityType.TOWER, EntityType.EMPTY, (tower, empty) -> {
-
-        });
-
     }
 
     @Override
@@ -146,13 +128,13 @@ public class TowerDefense extends GameApplication {
         });
 
         // DEBUG KEYS
-        FXGL.onKey(KeyCode.A, "nextLevel", () -> LevelManager.getInstance().nextLevel());
-        FXGL.onKey(KeyCode.R, "resetLevel", () -> LevelManager.getInstance().loadLevel(0));
+        FXGL.onKey(KeyCode.R, "restartLevel", () -> LevelManager.getInstance().loadLevel(0));
+        FXGL.onKey(KeyCode.L, "loadSave", () -> FileManager.getInstance().read());
+        FXGL.onKey(KeyCode.S, "save", () -> FileManager.getInstance().save());
 
         FXGL.onKeyDown(KeyCode.C, "printCache", () -> {
             TowerCache.getInstance().print();
             EnemyCache.getInstance().print();
-            System.out.println(enemyCache.getCache().size());
         });
 
         FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {

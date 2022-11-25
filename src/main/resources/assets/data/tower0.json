@@ -8,7 +8,7 @@
   "cost": 50,
 
   "bulletData": {
-    "img": "tower/arrow/bullet.png",
+    "img": "tower/flame/bullet.png",
     "width": 50,
     "height": 10,
     "damage": 10,

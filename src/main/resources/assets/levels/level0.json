@@ -1,5 +1,5 @@
 {
-  "name": "Level 0",
+  "name": "Lv. 0",
   "map": "tmx/level0.tmx",
   "money": 500,
   "amountOfEnemy": 1,

@@ -12,6 +12,7 @@ import com.lataverne.towerdefense.data.TowerData;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
+import java.io.*;
 import java.util.List;
 
 public class GameManager {
@@ -20,6 +21,7 @@ public class GameManager {
     private static GameManager instance;
     private LevelManager levelManager;
     private TowerManager towerManager;
+    private FileManager fileManager;
 
     // Cache
     private EnemyCache enemyCache;
@@ -38,7 +40,7 @@ public class GameManager {
     private Rectangle2D validPlace;
 
     // Constructor
-    private GameManager(){
+    private GameManager() {
         // Instantiate each cache
         this.enemyCache = EnemyCache.getInstance();
         this.towerCache = TowerCache.getInstance();
@@ -50,7 +52,11 @@ public class GameManager {
         this.isWaveStarted = false;
         this.pause = false;
 
-        this.validPlace = new Rectangle2D(0, 0, 975, 600);
+        this.validPlace = new Rectangle2D(0, 0, 930, 600);
+
+        // Système de sauvegarde
+        this.fileManager = FileManager.getInstance();
+
     }
 
     // Getters
@@ -61,6 +67,7 @@ public class GameManager {
 
     public LevelManager getLevelManager(){ return levelManager; }
     public TowerManager getTowerManager(){ return towerManager; }
+    public FileManager getFileManager(){ return fileManager; }
     public EnemyCache getEnemyCache(){ return enemyCache; }
     public TowerCache getTowerCache(){ return towerCache; }
 
@@ -76,8 +83,9 @@ public class GameManager {
         hideRangeIndicator();
     }
 
-    // Methods
+    public void setWaveStarted(boolean bool){ isWaveStarted = bool; }
 
+    // Methods
     /**
      * <p>
      *     Fonction qui permet lorsque l'on clique sur le bouton play de lancer la wave
@@ -92,29 +100,42 @@ public class GameManager {
     public void start(){
         if(!isWaveStarted){
             if(!levelManager.isMaxLevelReached()){
-                if (FXGL.geti("level") == 0) {
+                if(!FXGL.getb("levelComplete")){
+                    isWaveStarted = true;
+                    if(FXGL.geti("level") == 0){
+                        LevelData levelData = levelManager.getLevelData(0);
+                        levelManager.spawnEnemy(levelData);
+                    } else {
+                        //System.out.println("Level complété... CLEAR ALL");
+                        //levelManager.nextLevel();
+                        levelManager.spawnEnemy(levelManager.getCurrentLevelData());
+                    }
+                } else {
+                    System.out.println("Level complété... CLEAR ALL");
+                    FXGL.inc("level", 1);
+                    FXGL.set("levelComplete", false);
+                    levelManager.nextLevel();
+                }
+            } else {
+                levelManager.loadLevel(0);
+            }
+
+            /*if(!levelManager.isMaxLevelReached()){
+                if (FXGL.geti("level") == 0 && !FXGL.getb("levelComplete")) {
                     isWaveStarted = true;
                     LevelData levelData = levelManager.getCurrentLevelData();
                     levelManager.spawnEnemy(levelData);
                 } else {
-                    System.out.println("clear all !!!");
-                    FXGL.set("levelComplete", false);
+                    System.out.println("Level complété... CLEAR ALL");
                     isWaveStarted = true;
                     levelManager.nextLevel();
                     levelManager.spawnEnemy(levelManager.getCurrentLevelData());
-                    /*if(FXGL.getb("levelComplete")){
-                        System.out.println("clear all !!!");
-                        FXGL.set("levelComplete", false);
-                    } else {
-                        isWaveStarted = true;
-                        levelManager.nextLevel();
-                    }*/
                 }
             } else {
-                System.out.println("Max Level Reached");
-            }
+                System.out.println("Vous avez atteint le niveaux max !");
+            }*/
         } else {
-            System.out.println("Wave is currently ongoing");
+            System.out.println("Une vague d'ennemis est en cours !");
         }
     }
 
@@ -133,25 +154,26 @@ public class GameManager {
         if(isWaveStarted){
             if(playerHealth != 0){
                 // Si la wave est terminé on a gagné !
-                System.out.println(levelManager.getAmountOfEnemySpawned());
-                System.out.println(levelManager.getCurrentLevelData().amountOfEnemy());
-                System.out.println(enemyCache.getCache().size());
+                //System.out.println(levelManager.getAmountOfEnemySpawned());
+                //System.out.println(levelManager.getCurrentLevelData().amountOfEnemy());
+                //System.out.println(enemyCache.getCache().size());
                 if(enemyCache.getCache().size() == 0 && levelManager.getAmountOfEnemySpawned() == levelManager.getCurrentLevelData().amountOfEnemy()){
                     isWaveStarted = false;
-                    FXGL.inc("level", 1);
                     FXGL.set("levelComplete", true);
-                    System.out.println("Level complete!");
+                    System.out.println("Level terminé !");
                 } else {
-                    System.out.println("There are few enemies remaining to complete this level");
+                    System.out.println("Ils restent encore des ennemis à tuer");
                 }
             } else {
                 isWaveStarted = false;
                 enemyCache.getCache().forEach((key, value) -> key.removeFromWorld());
                 enemyCache.getCache().clear();
-                System.out.println("PLAYER HAS 0 HP !!!");
+                FXGL.set("hp", 10);
+                levelManager.loadLevel(0);
+                System.out.println("Partie terminée ! Vous avez perdu");
             }
         } else {
-            System.out.println("No wave has been started yet");
+            System.out.println("Aucune vague d'ennemis lancée !");
         }
     }
 
@@ -170,7 +192,7 @@ public class GameManager {
             if(rangeIndicatorEntity.isWithin(validPlace)){
                 // Si je n'ai pas assez d'argent pour acheter la tour
                 if(money < towerData.cost()) {
-                    System.out.println("Not enought money");
+                    //System.out.println("Vous n'avez pas assez d'argent !");
                     canBuild = false;
                     rangeIndicatorComponent.canBuild(false);
                 } else {
@@ -203,9 +225,6 @@ public class GameManager {
                 rangeIndicatorComponent.canBuild(false);
                 hideRangeIndicator();
             }
-
-
-
         }
     }
 

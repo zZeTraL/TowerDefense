@@ -82,12 +82,24 @@ public class LevelManager {
      */
     public void loadLevel(int index){
         if(index >= 0 && index <= levelDataList.size()) {
+            /*if(index + 1 > lastLevel){
+                FXGL.set("levelComplete", false);
+                System.out.println("Vous venez de terminer le jeu !");
+                loadLevel(0);
+                return;
+            } /*else if(FXGL.getb("levelComplete")){
+                FXGL.inc("level", 1);
+                index += 1;
+            }*/
+
             amountOfEnemySpawned = 0;
             LevelData levelData = levelDataList.get(index);
+            FXGL.set("levelComplete", false);
             FXGL.set("levelName", levelData.name());
             FXGL.set("level", index);
             FXGL.set("kill", 0);
             FXGL.set("money", levelData.money());
+
             FXGL.setLevelFromMap(levelData.map());
             spawnEntities();
         }
@@ -111,6 +123,7 @@ public class LevelManager {
     public void nextLevel() {
         if(isMaxLevelReached()) {
             System.out.println("Max level reached!");
+            loadLevel(0);
         } else {
             loadLevel(FXGL.geti("level"));
         }

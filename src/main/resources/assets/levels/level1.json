@@ -1,8 +1,8 @@
 {
-  "name": "Level 1",
+  "name": "Lv. 1",
   "map": "tmx/level1.tmx",
-  "money": 500,
-  "amountOfEnemy": 10,
+  "money": 1000,
+  "amountOfEnemy": 1,
   "scorePerKill": 5,
   "enemyHealth": 10,
   "enemySpeed": 0.75,
