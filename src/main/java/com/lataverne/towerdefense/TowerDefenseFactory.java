@@ -75,7 +75,7 @@ public class TowerDefenseFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(EntityType.WAYPOINT)
-                .viewWithBBox(rectangle)
+                //.viewWithBBox(rectangle)
                 .bbox(BoundingShape.box(32, 1))
                 .with(new WayPointComponent(direction))
                 .collidable()
