@@ -49,7 +49,7 @@ public class EnemyCache {
 
     /**
      * <p>
-     *     Fonction qui va chercher l'EnemyComponent d'une entité précise
+     *     Fonction qui va chercher le EnemyComponent d'une entité précise
      * </p>
      * @param entity Entité que l'on souhaite savoir son component
      * @return EnemyComponent
@@ -86,6 +86,15 @@ public class EnemyCache {
      * @param entity Entité que l'on souhaite supprimer
      */
     public void remove(Entity entity){ cache.remove(entity); }
+
+    public void clear(){
+        if(cache.size() > 0){
+            cache.forEach((key, value) -> {
+                key.removeFromWorld();
+            });
+            cache.clear();
+        }
+    }
 
     // Methods
 

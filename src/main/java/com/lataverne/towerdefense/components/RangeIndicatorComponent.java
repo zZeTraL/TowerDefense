@@ -20,8 +20,6 @@ public class RangeIndicatorComponent extends Component {
     private Texture texture;
     private Circle circle;
 
-    //private TowerData lastTowerData;
-
     public RangeIndicatorComponent(){
         okFill = new RadialGradient(
                 0.0, 0.0, 0.5, 0.5, 0.5, true, CycleMethod.NO_CYCLE,
@@ -33,11 +31,9 @@ public class RangeIndicatorComponent extends Component {
                 new Stop(1.0, new Color(1.0, 0.0, 0.0, 0.38)));
     }
 
-
     @Override
     public void onAdded() {
-        //图片
-        texture = FXGL.texture("tower/arrow/icon.png");
+        texture = FXGL.texture("tower/flame/icon.png");
         entity.getBoundingBoxComponent().addHitBox(new HitBox(BoundingShape.box(texture.getWidth(), texture.getHeight())));
         circle = new Circle(100, disabledFill);
         circle.setTranslateX(texture.getWidth() / 2.0);
@@ -58,5 +54,12 @@ public class RangeIndicatorComponent extends Component {
         //circle.setRadius(towerData.bulletData().range());
         circle.setRadius(towerData.bulletData().range());
     }
+
+    public void hide(){
+        entity.setX(-1000);
+        entity.setY(-1000);
+    }
+
+
 
 }

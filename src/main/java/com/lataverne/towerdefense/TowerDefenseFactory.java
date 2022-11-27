@@ -36,14 +36,14 @@ public class TowerDefenseFactory implements EntityFactory {
     public Entity newEmpty(SpawnData data) {
         int tableIndex = (int) data.getData().get("tableIndex");
         PathData path = gameManager.getLevelManager().getCurrentLevelData().pathData()[tableIndex];
-        System.out.println(tableIndex);
-        System.out.println(path);
+        //System.out.println(tableIndex);
+        //System.out.println(path);
         return FXGL.entityBuilder(data)
                 .type(EntityType.EMPTY)
                 //.view(new Rectangle(0, 0, path.width(), path.height()))
                 .bbox(BoundingShape.box(path.width(), path.height()))
                 .collidable()
-                //.neverUpdated()
+                .neverUpdated()
                 .build();
     }
 

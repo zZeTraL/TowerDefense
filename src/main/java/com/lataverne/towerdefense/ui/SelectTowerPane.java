@@ -10,12 +10,11 @@ public class SelectTowerPane extends VBox {
     public SelectTowerPane() {
         super(5);
 
-        var playBtn = new Button("hexMenu/start", 97, 90, () -> GameManager.getInstance().start());
+        var playBtn = new InteractButton("hexMenu/start", 97, 90, () -> GameManager.getInstance().start());
         playBtn.setTranslateX(-11);
 
-        var pauseBtn = new Button("hexMenu/pause", 85, 71, () -> GameManager.getInstance().pause());
+        var pauseBtn = new InteractButton("hexMenu/pause", 85, 71, () -> GameManager.getInstance().pause());
         pauseBtn.setTranslateX(-15);
-
 
         getChildren().addAll(playBtn, pauseBtn);
         setAlignment(Pos.BOTTOM_RIGHT);

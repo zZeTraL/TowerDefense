@@ -80,8 +80,7 @@ public class TowerDefense extends GameApplication {
 
         FXGL.onCollision(EntityType.ENEMY, EntityType.FINISH_POINT, (enemy, end) -> {
             FXGL.inc("hp", -1);
-            enemyCache.remove(enemy);
-            enemy.removeFromWorld();
+            enemyCache.clear();
             gameManager.check();
         });
 
@@ -90,7 +89,7 @@ public class TowerDefense extends GameApplication {
             enemyComponent.removeHealth(bullet.getObject("bulletData"));
             if (enemyComponent.isDead()) {
                 FXGL.inc("kill", 1);
-                enemyCache.getCache().remove(enemy);
+                enemyCache.remove(enemy);
                 enemy.removeFromWorld();
                 gameManager.check();
                 return;
@@ -137,22 +136,11 @@ public class TowerDefense extends GameApplication {
             EnemyCache.getInstance().print();
         });
 
-        FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {
+        /*FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {
             gameManager.check();
-            if(gameManager.isWaveStarted()){
-                EnemyCache enemyCache = gameManager.getEnemyCache();
-                enemyCache.getCache().forEach((key, value) ->  {
-                    key.removeFromWorld();
-                });
-                enemyCache.getCache().clear();
-            }
-        });
+            if(gameManager.isWaveStarted()) enemyCache.clear();
+        });*/
     }
-
-    /*public static void spawnEntities(){
-        Entity rangeIndicator = FXGL.spawn("rangeIndicator");
-        gameManager.setRangeIndicatorEntity(rangeIndicator);
-    }*/
 
     public static void main(String[] args) {
         launch(args);
