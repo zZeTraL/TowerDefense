@@ -4,7 +4,6 @@
   "img": "tower/ice/icon.png",
   "width": 45,
   "height": 89,
-  "health": 100,
   "cost": 100,
 
   "bulletData": {

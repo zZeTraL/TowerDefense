@@ -128,9 +128,9 @@ public class TowerDefense extends GameApplication {
         });
 
         // DEBUG KEYS
-        FXGL.onKey(KeyCode.R, "restartLevel", () -> LevelManager.getInstance().loadLevel(0));
-        FXGL.onKey(KeyCode.L, "loadSave", () -> FileManager.getInstance().read());
-        FXGL.onKey(KeyCode.S, "save", () -> FileManager.getInstance().save());
+        FXGL.onKeyDown(KeyCode.R, "restartLevel", () -> LevelManager.getInstance().loadLevel(0));
+        FXGL.onKeyDown(KeyCode.L, "loadSave", () -> FileManager.getInstance().read());
+        FXGL.onKeyDown(KeyCode.S, "save", () -> FileManager.getInstance().save());
 
         FXGL.onKeyDown(KeyCode.C, "printCache", () -> {
             TowerCache.getInstance().print();

@@ -4,7 +4,6 @@
   "img": "tower/flame/icon.png",
   "width": 45,
   "height": 89,
-  "health": 100,
   "cost": 50,
 
   "bulletData": {

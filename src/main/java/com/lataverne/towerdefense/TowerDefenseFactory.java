@@ -32,21 +32,18 @@ public class TowerDefenseFactory implements EntityFactory {
     private final TowerManager towerManager = gameManager.getTowerManager();
     public static int amountOfButtonCreated = 0;
 
-    /*@Spawns("")
-    public Entity newSpa(SpawnData data) {
-        return FXGL.entityBuilder(data).build();
-    }*/
-
     @Spawns("Empty")
     public Entity newEmpty(SpawnData data) {
         int tableIndex = (int) data.getData().get("tableIndex");
         PathData path = gameManager.getLevelManager().getCurrentLevelData().pathData()[tableIndex];
+        System.out.println(tableIndex);
+        System.out.println(path);
         return FXGL.entityBuilder(data)
                 .type(EntityType.EMPTY)
                 //.view(new Rectangle(0, 0, path.width(), path.height()))
                 .bbox(BoundingShape.box(path.width(), path.height()))
                 .collidable()
-                .neverUpdated()
+                //.neverUpdated()
                 .build();
     }
 
@@ -117,6 +114,7 @@ public class TowerDefenseFactory implements EntityFactory {
                 .with(component)
                 .with(new BulletComponent())
                 .view(towerData.img())
+                .zIndex(100)
                 .build();
 
         towerCache.add(tower, component);
@@ -132,6 +130,7 @@ public class TowerDefenseFactory implements EntityFactory {
                 .with(component)
                 .bbox(BoundingShape.box(32, 32))
                 .collidable()
+                .zIndex(50)
                 .build();
         enemyCache.add(enemy, component);
         return enemy;
@@ -189,6 +188,7 @@ public class TowerDefenseFactory implements EntityFactory {
                         bulletData.speed()))
                 .with(new OffscreenCleanComponent())
                 .with(new BulletComponent())
+                .zIndex(125)
                 .build();
     }
 

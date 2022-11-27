@@ -2,7 +2,6 @@ package com.lataverne.towerdefense.manager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import com.lataverne.towerdefense.EntityType;
 import com.lataverne.towerdefense.cache.EnemyCache;
 import com.lataverne.towerdefense.cache.TowerCache;
@@ -12,7 +11,6 @@ import com.lataverne.towerdefense.data.TowerData;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
-import java.io.*;
 import java.util.List;
 
 public class GameManager {
@@ -102,14 +100,15 @@ public class GameManager {
             if(!levelManager.isMaxLevelReached()){
                 if(!FXGL.getb("levelComplete")){
                     isWaveStarted = true;
-                    if(FXGL.geti("level") == 0){
-                        LevelData levelData = levelManager.getLevelData(0);
+                    LevelData levelData = levelManager.getCurrentLevelData();
+                    levelManager.spawnEnemy(levelData);
+                    /*if(FXGL.geti("level") == 0){
                         levelManager.spawnEnemy(levelData);
                     } else {
                         //System.out.println("Level complété... CLEAR ALL");
                         //levelManager.nextLevel();
-                        levelManager.spawnEnemy(levelManager.getCurrentLevelData());
-                    }
+                        levelManager.spawnEnemy(levelData);
+                    }*/
                 } else {
                     System.out.println("Level complété... CLEAR ALL");
                     FXGL.inc("level", 1);
@@ -199,7 +198,7 @@ public class GameManager {
                     //System.out.println(FXGL.getGameWorld().getSingleton(EntityType.EMPTY));
                     List<Entity> towerEntities = FXGL.getGameWorld().getEntitiesByType(EntityType.TOWER);
                     //System.out.print(towerEntities);
-                    Entity emptyEntity = FXGL.getGameWorld().getSingleton(EntityType.EMPTY);
+                    List<Entity> emptyEntities = FXGL.getGameWorld().getEntitiesByType(EntityType.EMPTY);
 
                     for (Entity towerEntity : towerEntities) {
                         if (towerEntity.isColliding(rangeIndicatorEntity)) {
@@ -210,11 +209,20 @@ public class GameManager {
                         }
                     }
 
-                    if (rangeIndicatorEntity.isColliding(emptyEntity)) {
+                    for (Entity emptyEntity : emptyEntities) {
+                        if (emptyEntity.isColliding(rangeIndicatorEntity)) {
+                            //System.out.print("Collision detected!");
+                            canBuild = false;
+                            rangeIndicatorComponent.canBuild(false);
+                            return;
+                        }
+                    }
+
+                    /*if (rangeIndicatorEntity.isColliding(emptyEntity)) {
                         canBuild = false;
                         rangeIndicatorComponent.canBuild(false);
                         return;
-                    }
+                    }*/
 
                     canBuild = true;
                     rangeIndicatorComponent.canBuild(true);

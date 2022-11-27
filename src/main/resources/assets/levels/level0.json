@@ -3,7 +3,6 @@
   "map": "tmx/level0.tmx",
   "money": 500,
   "amountOfEnemy": 1,
-  "scorePerKill": 5,
   "enemyHealth": 1,
   "enemySpeed": 1,
   "enemySpawnRate": 1.25,
@@ -12,7 +11,7 @@
   "pathData": [
     {
       "width": 960,
-      "height": 100
+      "height": 35
     }
   ]
 }
