@@ -1,6 +1,7 @@
 # TowerDefense
 
 TowerDefense simple et efficace
+(Gradle required)
 
 ## Comment redéployer le projet ?
 
