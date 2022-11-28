@@ -6,12 +6,5 @@ TowerDefense simple et efficace
 
 1. **Cloner** le projet
 
-## Libs
-
-[Animate.css](https://animate.style/)
-
-[Hover.css](https://ianlunn.github.io/Hover/)
-
-[Aos](https://michalsnik.github.io/aos/)
-
-[BoxIcons](https://boxicons.com/)
+## JavaDoc
+https://zzetral.github.io/TowerDefense/
