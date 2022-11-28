@@ -12,10 +12,14 @@ import javafx.scene.control.ToggleGroup;
 
 public class TowerButtonComponent extends Component {
 
+    // Jeu de données d'une tour
     private final TowerData towerData;
+    // Notre bouton (on/off) d'où le ToggleButton et non le Button de javaFX
     private final ToggleButton btn;
+    // Groupe réunissant tous nos boutons
     private final ToggleGroup toggleGroup;
 
+    // Constructor
     public TowerButtonComponent(TowerData towerData){
         this.towerData = towerData;
         this.toggleGroup = new ToggleGroup();
@@ -24,6 +28,11 @@ public class TowerButtonComponent extends Component {
         btn.setPrefSize(80, 80);
     }
 
+    /**
+     * <p>
+     *     Fonction qui s'exécute lorsque l'entité apparait
+     * </p>
+     */
     @Override
     public void onAdded(){
         btn.setTranslateX(-40);
@@ -33,12 +42,12 @@ public class TowerButtonComponent extends Component {
             System.out.println(FXGL.geti("selectedTower"));
         });
 
-        Label towerCostLabel = new Label(towerData.cost() + "");
+        Label towerCostLabel = new Label(towerData.cost() + "$");
         towerCostLabel.setAlignment(Pos.CENTER);
         towerCostLabel.setPrefSize(50, 15);
         towerCostLabel.setTranslateX(-25);
         towerCostLabel.setTranslateY(63);
-        towerCostLabel.setStyle("-fx-background-color: #f2f2f2;-fx-background-radius: 12;-fx-text-fill: #1E8CB9;");
+        towerCostLabel.setStyle("-fx-background-color: #ffffff;-fx-background-radius: 12;-fx-text-fill: #000000;");
 
         entity.getViewComponent().addChild(towerCostLabel);
         entity.getViewComponent().addChild(btn);

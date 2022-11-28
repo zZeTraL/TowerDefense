@@ -35,6 +35,8 @@ public class FileManager {
                 if(dataFile.createNewFile()) {
                     // La création du fichier a réussi
                     System.out.println("Le fichier de sauvegarde vient d'être crée");
+                    // On sauvegarde, car sinon rien n'est écrit dans le fichier et que l'utilisateur charge la sauvegarde = ERREUR
+                    save();
                 } else {
                     // Erreur lors de la création du fichier de sauvegarde
                     System.out.println("Erreur lors de la création du fichier de sauvegarde !");

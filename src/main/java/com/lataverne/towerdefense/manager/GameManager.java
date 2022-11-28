@@ -15,8 +15,6 @@ import java.util.List;
 
 public class GameManager {
 
-
-
     // Design pattern : SINGLETON
     private static GameManager instance;
     // Manager

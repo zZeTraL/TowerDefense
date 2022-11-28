@@ -1,0 +1,7 @@
+module:towerdefense.main
+com.lataverne.towerdefense
+com.lataverne.towerdefense.cache
+com.lataverne.towerdefense.components
+com.lataverne.towerdefense.data
+com.lataverne.towerdefense.manager
+com.lataverne.towerdefense.ui
