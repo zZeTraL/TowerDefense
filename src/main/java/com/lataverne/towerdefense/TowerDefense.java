@@ -8,6 +8,7 @@ import com.lataverne.towerdefense.cache.EnemyCache;
 import com.lataverne.towerdefense.cache.TowerCache;
 import com.lataverne.towerdefense.components.EnemyComponent;
 import com.lataverne.towerdefense.components.WayPointComponent;
+import com.lataverne.towerdefense.data.LevelData;
 import com.lataverne.towerdefense.manager.FileManager;
 import com.lataverne.towerdefense.manager.GameManager;
 import com.lataverne.towerdefense.manager.LevelManager;
@@ -36,7 +37,7 @@ public class TowerDefense extends GameApplication {
         // Largeur et hauteur de la fenêtre
         settings.setWidth(20 * 48 + 115);
         settings.setHeight(20 * 32);
-        settings.setAppIcon("logo.jpg");
+        settings.setAppIcon("logo.png");
         // Curseur
         settings.setDefaultCursor(new CursorInfo("cursor.png", 0, 0));
         // Main menu
@@ -96,8 +97,10 @@ public class TowerDefense extends GameApplication {
             // lorsque je remove de la vie de l'ennemi (le booléen isDead du component sera soit false ou true si pas mort ou mort)
             // Si l'ennemi est mort (i.e vie <= 0)
             if (enemyComponent.isDead()) {
-                // On incrémente le nombre de kill du joueur
+                LevelData levelData = gameManager.getLevelManager().getCurrentLevelData();
+                // On incrémente le nombre de kill du joueur et l'argent lors d'un kill
                 FXGL.inc("kill", 1);
+                FXGL.inc("money", levelData.moneyFromKill());
                 // On enlève l'ennemi du cache puis du monde
                 enemyCache.remove(enemy);
                 enemy.removeFromWorld();
@@ -150,11 +153,6 @@ public class TowerDefense extends GameApplication {
             TowerCache.getInstance().print();
             EnemyCache.getInstance().print();
         });
-
-        /*FXGL.onKeyDown(KeyCode.K, "killAllEnemies", () -> {
-            gameManager.check();
-            if(gameManager.isWaveStarted()) enemyCache.clear();
-        });*/
     }
 
     public static void main(String[] args) { launch(args); }

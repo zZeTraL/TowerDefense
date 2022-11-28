@@ -1,6 +1,6 @@
 {
   "id": 0,
-  "name": "Tower 0",
+  "name": "Flame Tower",
   "img": "tower/flame/icon.png",
   "width": 45,
   "height": 89,
@@ -10,7 +10,7 @@
     "img": "tower/flame/bullet.png",
     "width": 50,
     "height": 10,
-    "damage": 10,
+    "damage": 5,
     "range": 200,
     "speed": 500,
     "attackRate": 1

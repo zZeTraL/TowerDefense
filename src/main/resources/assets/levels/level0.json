@@ -1,17 +1,18 @@
 {
   "name": "Lv. 0",
   "map": "tmx/level0.tmx",
-  "money": 500,
-  "amountOfEnemy": 1,
-  "enemyHealth": 1,
-  "enemySpeed": 1,
+  "money": 250,
+  "moneyFromKill": 0,
+  "amountOfEnemy": 15,
+  "enemyHealth": 50,
+  "enemySpeed": 0.65,
   "enemySpawnRate": 1.25,
   "startDirection": "right",
 
   "pathData": [
     {
       "width": 960,
-      "height": 35
+      "height": 30
     }
   ]
 }

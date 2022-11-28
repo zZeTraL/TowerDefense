@@ -20,6 +20,7 @@ import com.lataverne.towerdefense.data.TowerData;
 import com.lataverne.towerdefense.manager.GameManager;
 import com.lataverne.towerdefense.manager.TowerManager;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
@@ -124,9 +125,12 @@ public class TowerDefenseFactory implements EntityFactory {
     @Spawns("Enemy")
     public Entity newEnemy(SpawnData data){
         EnemyComponent component = new EnemyComponent();
+        Rectangle rectangle = new Rectangle(32, 32);
+        rectangle.setFill(Paint.valueOf("#3498db"));
         Entity enemy = FXGL.entityBuilder(data)
                 .type(EntityType.ENEMY)
-                .viewWithBBox(new Rectangle(32, 32))
+                .viewWithBBox(rectangle)
+                //.view("enemy/enemy.png")
                 .with(component)
                 .bbox(BoundingShape.box(32, 32))
                 .collidable()

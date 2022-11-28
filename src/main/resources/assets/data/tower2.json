@@ -1,0 +1,19 @@
+{
+  "id": 2,
+  "name": "Thunder Tower",
+  "img": "tower/thunder/icon.png",
+  "width": 45,
+  "height": 80,
+  "cost": 400,
+
+  "bulletData": {
+    "img": "tower/thunder/bullet.png",
+    "width": 50,
+    "height": 10,
+    "damage": 65,
+    "range": 150,
+    "speed": 1000,
+    "attackRate": 3
+  }
+
+}

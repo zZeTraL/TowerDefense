@@ -13,6 +13,7 @@ public record LevelData(
          * name : Nom du niveau
          * map : URL vers la map
          * money : argent du joueur lors du lancement du niveau
+         * moneyFromKill : argent donné au joueur lorsqu'il tue un ennemi (simplement pour l'aider dans le niveau actuel)
          * amountOfEnemy : nombre d'ennemis que le level va faire spawn
          * enemyHealth : Vie d'un ennemi
          * enemySpeed : Vitesse d'un ennemi
@@ -28,6 +29,7 @@ public record LevelData(
         String name,
         String map,
         int money,
+        int moneyFromKill,
         // Wave data
         int amountOfEnemy,
             // Enemy data

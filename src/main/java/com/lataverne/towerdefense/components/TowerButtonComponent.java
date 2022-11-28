@@ -39,7 +39,7 @@ public class TowerButtonComponent extends Component {
         btn.setBackground(null);
         btn.setOnAction((ActionEvent e) ->  {
             FXGL.set("selectedTower", towerData.id());
-            System.out.println(FXGL.geti("selectedTower"));
+            //System.out.println(FXGL.geti("selectedTower"));
         });
 
         Label towerCostLabel = new Label(towerData.cost() + "$");

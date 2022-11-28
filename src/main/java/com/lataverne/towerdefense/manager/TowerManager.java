@@ -4,7 +4,9 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.SpawnData;
 import com.lataverne.towerdefense.data.TowerData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TowerManager {
@@ -13,21 +15,21 @@ public class TowerManager {
     private static TowerManager instance;
 
     /*
-     * HashMap qui va contenir qui à un string va associer un TowerData
-     * Cette hashmap que l'on crée va être important elle va nous permettre ici
+     * List qui va contenir le jeu de données de chaque tour
+     * Cette liste que l'on crée va être important elle va nous permettre ici
      * de venir charger en mémoire toutes les données associés aux différentes tours
-     * elles seront ainsi identifiable par le nom et/ou par leur id
+     * elles seront ainsi identifiable par un id
      */
-    private final HashMap<String, TowerData> towerDataMap;
+    private final List<TowerData> towerDataList;
 
     // Constructor
     private TowerManager(){
-        this.towerDataMap = new HashMap<>();
-        for (int i = 0; i < 2; i++) {
+        this.towerDataList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
             TowerData data = FXGL.getAssetLoader().loadJSON("data/tower" + i + ".json", TowerData.class).get();
-            towerDataMap.put(data.name(), data);
+            towerDataList.add(data);
         }
-        System.out.println(towerDataMap);
+        //System.out.println(towerDataList);
     }
 
     /**
@@ -45,35 +47,14 @@ public class TowerManager {
     /**
      * <p>
      *     Fonction qui permet de récupérer le jeu de données d'une tour en fonction
-     *     de son name
-     * </p>
-     * @param towerName nom de la tour
-     * @return TowerData
-     */
-    public TowerData getTowerData(String towerName){ return towerDataMap.get(towerName); }
-
-    /**
-     * <p>
-     *     Fonction qui permet de récupérer le jeu de données d'une tour en fonction
      *     d'un index 0 à n (si n tours)
      * </p>
      * @param index id de la tour souhaitée
      * @return TowerData
      */
     public TowerData getTowerData(int index){
-        if(index < 0 || index > towerDataMap.size()) {
-            return null;
-        } else {
-            TowerData result = null;
-            int count = 0;
-            for(Map.Entry<String, TowerData> entry : towerDataMap.entrySet()){
-                if(count == index){
-                    result = entry.getValue();
-                }
-                count++;
-            }
-            return result;
-        }
+        if(index < 0 || index > towerDataList.size()) return null;
+        return towerDataList.get(index);
     }
 
     // Methods
@@ -87,6 +68,7 @@ public class TowerManager {
         FXGL.spawn("selectTower");
         FXGL.spawn("towerButton", new SpawnData(1016, 60));
         FXGL.spawn("towerButton", new SpawnData(1016, 160));
+        FXGL.spawn("towerButton", new SpawnData(1016, 260));
     }
 
 }

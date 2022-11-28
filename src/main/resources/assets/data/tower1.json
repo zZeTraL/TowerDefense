@@ -1,6 +1,6 @@
 {
   "id": 1,
-  "name": "Tower 1",
+  "name": "Ice Tower",
   "img": "tower/ice/icon.png",
   "width": 45,
   "height": 89,
@@ -10,10 +10,10 @@
     "img": "tower/ice/bullet.png",
     "width": 50,
     "height": 10,
-    "damage": 10,
+    "damage": 15,
     "range": 300,
     "speed": 600,
-    "attackRate": 1
+    "attackRate": 1.5
   }
 
 }
